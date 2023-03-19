@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:innovit_2cs_project_paiement/widgets/appBar.dart';
 
 void main() {
   runApp(const MyApp());
@@ -70,10 +72,10 @@ class _MyHomePageState extends State<MyHomePage> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return Scaffold(
-      appBar: AppBar(
+      appBar: CustomizedAppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+        title: 'InnovIT',
       ),
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
@@ -95,6 +97,9 @@ class _MyHomePageState extends State<MyHomePage> {
           // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            SvgPicture.asset(
+              '../assets/logo/logo.svg',
+            ),
             const Text(
               'You have pushed the button this many times:',
             ),
