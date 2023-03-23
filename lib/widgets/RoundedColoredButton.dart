@@ -8,6 +8,8 @@ class RoundedColoredButton extends StatelessWidget {
   Color fillColor;
   String text;
   VoidCallback onPressed;
+  double shadowBlurRadius;
+
 
   RoundedColoredButton({
     Key? key,
@@ -16,33 +18,46 @@ class RoundedColoredButton extends StatelessWidget {
     required this.text,
     required this.textColor,
     required this.fillColor,
-    required this.onPressed
+    required this.shadowBlurRadius,
+    required this.onPressed,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return TextButton(
-        style: ButtonStyle(
-          fixedSize: MaterialStateProperty.all(Size(
-              this.width,
-              this.height,
-          )),
-          foregroundColor: MaterialStateProperty.all(this.textColor),
-          backgroundColor: MaterialStateProperty.all(this.fillColor),
-          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-            RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey,
+            spreadRadius: 0,
+            blurRadius: this.shadowBlurRadius,
+          ),
+        ],
+      ),
+      child: TextButton(
+          style: ButtonStyle(
+            fixedSize: MaterialStateProperty.all(Size(
+                this.width,
+                this.height,
+            )),
+            foregroundColor: MaterialStateProperty.all(this.textColor),
+            backgroundColor: MaterialStateProperty.all(this.fillColor),
+            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+              RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
             ),
           ),
-        ),
-        onPressed: this.onPressed,
-        child: Text(
-          this.text,
-          style: TextStyle(
-              fontSize: 25,
-              fontWeight: FontWeight.w400
-          ),
-        )
+          onPressed: this.onPressed,
+          child: Text(
+            this.text,
+            style: TextStyle(
+                fontSize: 25,
+                fontWeight: FontWeight.w400
+            ),
+          )
+      ),
     );
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:innovit_2cs_project_paiement/utilities/constants.dart';
 import 'package:innovit_2cs_project_paiement/widgets/RoundedColoredButton.dart';
+import 'package:innovit_2cs_project_paiement/widgets/RoundedTextField.dart';
 
 class SignInPage extends StatelessWidget {
   const SignInPage({Key? key}) : super(key: key);
@@ -38,39 +39,18 @@ class SignInPage extends StatelessWidget {
                 ),
               ],
             ),
-            TextField(
-              decoration: InputDecoration(
-                  hintText: 'Enter your email',
-                  hintStyle: TextStyle(
-                    fontSize: 17,
-                    color: Color(0xff9BAEBC),
-                  ),
-                  filled: false,
-                  contentPadding: EdgeInsets.only(left: 15,top: 5,bottom: 5),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20),
-                    borderSide: BorderSide(
-                        width: 1,
-                        color: Colors.greenAccent
-                    ),
-                  )),
+            RoundedTextField(
+              HintText: 'Enter your email',
+              hintTextSize: 17,
+              borderColor: Color(0xff251201).withOpacity(0.2),
+              selectedBorderColor: coffeeBeige.withOpacity(0.7),
             ),
-            TextField(
-              decoration: InputDecoration(
-                  hintText: 'Enter your email',
-                  hintStyle: TextStyle(
-                    fontSize: 17,
-                    color: Color(0xff9BAEBC),
-                  ),
-                  filled: false,
-                  contentPadding: EdgeInsets.only(left: 15,top: 5,bottom: 5),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20),
-                    borderSide: BorderSide(
-                      width: 1.0,
-                      color: Color(0xff251201),
-                    ),
-                  )),
+            RoundedTextField(
+              HintText: 'Enter your password',
+              hintTextSize: 17,
+              borderColor: Color(0xff251201).withOpacity(0.2),
+              selectedBorderColor: coffeeBeige.withOpacity(0.7),
+              trailingIcon: Icon(Icons.remove_red_eye_outlined),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -78,16 +58,15 @@ class SignInPage extends StatelessWidget {
                 Row(
                   children: [
                     Checkbox(
-                        value: false,
-                        onChanged: (value){},
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5.0),
-                        ),
-                        side: MaterialStateBorderSide.resolveWith(
-                              (states) => BorderSide(
-                                  width: 1.0,
-                                  color: Colors.red
-                              ),
+                      checkColor: Colors.black,
+                      value: false,
+                      onChanged: (value) {},
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5.0),
+                      ),
+                      side: MaterialStateBorderSide.resolveWith(
+                        (states) =>
+                            BorderSide(width: 1.0, color: Color(0xff9BAEBC)),
                       ),
                     ),
                     Text(
@@ -108,7 +87,84 @@ class SignInPage extends StatelessWidget {
                 ),
               ],
             ),
-            RoundedColoredButton(width: 350, height: 50, text: 'Sign In', textColor: Colors.white, fillColor: coffeeBrown.withOpacity(0.7), onPressed: (){})
+            RoundedColoredButton(
+                width: 350,
+                height: 50,
+                text: 'Sign In',
+                textColor: Colors.white,
+                fillColor: coffeeBrown.withOpacity(0.7),
+                shadowBlurRadius: 7,
+                onPressed: () {}),
+            Row(
+              children: [
+                Expanded(
+                  child: Divider(
+                    indent: 10,
+                    endIndent: 10,
+                    thickness: 1,
+                    color: Colors.black,
+                  ),
+                ),
+                Text(
+                  'or',
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.black,
+                  ),
+                ),
+                Expanded(
+                  child: Divider(
+                    indent: 10,
+                    endIndent: 10,
+                    thickness: 1,
+                    color: Colors.black,
+                  ),
+                ),
+              ],
+            ),
+            Container(
+              width: 350,
+              height: 50,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(color: Color(0xffD9D9D9))),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.g_mobiledata_rounded,
+                    size: 40,
+                  ),
+                  Text(
+                    'Login with google',
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: Colors.black,
+                    ),
+                  )
+                ],
+              ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Don’t have an account ?  ',
+                  style: TextStyle(
+                    fontSize: 17,
+                    color: Colors.black,
+                  ),
+                ),
+                Text(
+                  'Sign up',
+                  style: TextStyle(
+                    fontSize: 17,
+                    color: coffeeBrown,
+                    decoration: TextDecoration.underline,
+                  ),
+                ),
+              ],
+            ),
           ],
         ),
       ),

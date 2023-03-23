@@ -37,6 +37,7 @@ class ScanPage extends StatelessWidget {
               text: 'Confirm',
               textColor: Colors.white,
               fillColor: deepGreen,
+              shadowBlurRadius: 0,
               onPressed: (){},
           )
         ],
