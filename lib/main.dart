@@ -17,17 +17,14 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        fontFamily: 'Outfit'
-      ),
-      home: SignInPage(),
+      theme: ThemeData(fontFamily: 'Outfit'),
+      home: ScanPage(),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
-
 
   final String title;
 
