@@ -34,7 +34,7 @@ class SignInPage extends StatelessWidget {
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 20,
-                    color: coffeeBrown,
+                    color: cadetGray,
                   ),
                 ),
               ],
@@ -43,13 +43,13 @@ class SignInPage extends StatelessWidget {
               HintText: 'Enter your email',
               hintTextSize: 17,
               borderColor: Color(0xff251201).withOpacity(0.2),
-              selectedBorderColor: coffeeBeige.withOpacity(0.7),
+              selectedBorderColor: antiFlashWhite.withOpacity(0.7),
             ),
             RoundedTextField(
               HintText: 'Enter your password',
               hintTextSize: 17,
               borderColor: Color(0xff251201).withOpacity(0.2),
-              selectedBorderColor: coffeeBeige.withOpacity(0.7),
+              selectedBorderColor: antiFlashWhite.withOpacity(0.7),
               trailingIcon: Icon(Icons.remove_red_eye_outlined),
             ),
             Row(
@@ -92,7 +92,7 @@ class SignInPage extends StatelessWidget {
                 height: 50,
                 text: 'Sign In',
                 textColor: Colors.white,
-                fillColor: coffeeBrown.withOpacity(0.7),
+                fillColor: cadetGray.withOpacity(0.7),
                 shadowBlurRadius: 7,
                 onPressed: () {}),
             Row(
@@ -159,7 +159,7 @@ class SignInPage extends StatelessWidget {
                   'Sign up',
                   style: TextStyle(
                     fontSize: 17,
-                    color: coffeeBrown,
+                    color: cadetGray,
                     decoration: TextDecoration.underline,
                   ),
                 ),
