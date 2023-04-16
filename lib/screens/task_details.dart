@@ -1,12 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:innovit_2cs_project_paiement/widgets/CustomBottomNavBar.dart';
 import '../utilities/constants.dart';
-import 'tasks_list.dart';
-class TaskDetails extends StatelessWidget{
-  final Task task;
-  const TaskDetails({super.key, required this.task});
+import 'notifications.dart';
+class TaskDetails extends StatefulWidget{
+  const TaskDetails({super.key});
+
+  @override
+  State<TaskDetails> createState() => _TaskDetailsState();
+}
+
+class _TaskDetailsState extends State<TaskDetails> {
   @override
   Widget build(BuildContext context) {
+    String _selectedStatus = 'To Do';
+    List<String> _statusOptions = ['To Do', 'Done'];
+
+    late Task task = ModalRoute.of(context)!.settings.arguments as Task;
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -137,31 +146,32 @@ class TaskDetails extends StatelessWidget{
                         color: Colors.black,
                       ),
                     ),
-                    Text(
-                      task.etat,
-                      style: TextStyle(
-                        fontSize: 15,
-                        color: task.etat=="TO DO" ? pastelRed : mountainMeadow,
+                DropdownButton<String>(
+                  value: _selectedStatus,
+                  items: _statusOptions.map((String status) {
+                    return DropdownMenuItem<String>(
+                      value: status,
+                      child: Text(
+                          status,
+                          style: TextStyle(color: status =='To Do'?mountainMeadow:pastelRed),
                       ),
-                    ),
-                  ],
+                    );
+                  }).toList(),
+
+                  onChanged: (newStatus) {
+                    setState(() {
+                      _selectedStatus = newStatus!;
+                    });
+                    // Update the task status in your data model or database
+                  },
+                )
+                ],
 
                 ),
               ),
             ],
           ),
         ),) ,
-      bottomNavigationBar: CustomBottomNavBar(
-        icon1: const Icon(Icons.notifications),
-        icon2: const Icon(Icons.checklist_rtl),
-        icon3: const Icon(Icons.person),
-        label1: 'Notifications',
-        label2: "task's list",
-        label3: 'Profile',
-        selectedItemColor: mountainMeadow,
-        unselectedItemColor: Colors.black,
-      ),
     );
   }
-
 }

@@ -52,8 +52,8 @@ class RoundedColoredButton extends StatelessWidget {
           onPressed: this.onPressed,
           child: Text(
             this.text,
-            style: TextStyle(
-                fontSize: 25,
+            style: const TextStyle(
+                fontSize: 16,
                 fontWeight: FontWeight.w400
             ),
           )
