@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../utilities/constants.dart';
 
 class HelpData{
@@ -99,8 +98,9 @@ class HelpState extends State<Help>{
                   return ExpansionTile(
                     title: Text(
                       displayedList[index].question,
-                      style: TextStyle(
-                        fontSize: 14
+                      style: const TextStyle(
+                        fontSize: 14,
+                        color: Colors.black
                     ),),
                     children: <Widget>[
                       Padding(

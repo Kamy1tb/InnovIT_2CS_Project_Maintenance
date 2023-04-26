@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:innovit_2cs_project_paiement/screens/EditProfile.dart';
-import 'package:innovit_2cs_project_paiement/screens/Help.dart';
-import 'package:innovit_2cs_project_paiement/screens/Security.dart';
-import 'package:innovit_2cs_project_paiement/screens/tasks_list.dart';
+import 'package:innovit_2cs_project_paiement/screens/HomePage.dart';
+
 import 'package:innovit_2cs_project_paiement/screens/notifications.dart';
+import 'package:innovit_2cs_project_paiement/screens/tasks_list.dart';
 import 'package:innovit_2cs_project_paiement/screens/profile.dart';
+import 'package:innovit_2cs_project_paiement/screens/EditProfile.dart';
+import 'package:innovit_2cs_project_paiement/screens/Security.dart';
+import 'package:innovit_2cs_project_paiement/screens/Help.dart';
+
 import 'package:innovit_2cs_project_paiement/screens/task_details.dart';
 import 'package:innovit_2cs_project_paiement/widgets/appBar.dart';
 
@@ -20,19 +23,19 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      // routes: {
-      //   "/notifications": (_) => const Notifications(),
-      //   "/tasks": (_) => const TasksList(),
-      //   "/details": (_) => const TaskDetails(task: task),
-      //   "/profile": (_) => Profile(),
-      //   "/edit" : (_) => EditProfile(),
-      //   "/Security" : (_) => const Security(),
-      //   "/help" : (_) => const Help(),
-      // },
+      routes: {
+        "/notifications": (_) => const Notifications(),
+        "/tasks": (_) => const TasksList(),
+        "/details": (_) => const TaskDetails(),
+        "/profile": (_) => Profile(),
+        "/edit" : (_) => EditProfile(),
+        "/security" : (_) => const Security(),
+        "/help" : (_) => const Help(),
+      },
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(fontFamily: 'Outfit'),
-      home: Help(),
+      home: HomePage(),
     );
   }
 }

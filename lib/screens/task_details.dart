@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:innovit_2cs_project_paiement/widgets/CustomBottomNavBar.dart';
 import '../utilities/constants.dart';
 import 'notifications.dart';
 class TaskDetails extends StatefulWidget{
@@ -10,13 +9,13 @@ class TaskDetails extends StatefulWidget{
 }
 
 class _TaskDetailsState extends State<TaskDetails> {
+  late Task task = ModalRoute.of(context)!.settings.arguments as Task;
+  List<String> _statusOptions = ['TO DO', 'DONE'];
+  late String _selectedStatus= task.etat;
+
   @override
   Widget build(BuildContext context) {
-    String _selectedStatus = 'To Do';
-    List<String> _statusOptions = ['To Do', 'Done'];
-
-    late Task task = ModalRoute.of(context)!.settings.arguments as Task;
-    return Scaffold(
+        return Scaffold(
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
@@ -147,13 +146,14 @@ class _TaskDetailsState extends State<TaskDetails> {
                       ),
                     ),
                 DropdownButton<String>(
+                  isDense: true,
                   value: _selectedStatus,
                   items: _statusOptions.map((String status) {
                     return DropdownMenuItem<String>(
                       value: status,
                       child: Text(
                           status,
-                          style: TextStyle(color: status =='To Do'?mountainMeadow:pastelRed),
+                          style: TextStyle(color: status =='TO DO'?pastelRed:mountainMeadow),
                       ),
                     );
                   }).toList(),
@@ -161,6 +161,7 @@ class _TaskDetailsState extends State<TaskDetails> {
                   onChanged: (newStatus) {
                     setState(() {
                       _selectedStatus = newStatus!;
+                      //update query
                     });
                     // Update the task status in your data model or database
                   },

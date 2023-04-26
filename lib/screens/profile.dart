@@ -1,85 +1,132 @@
 import 'package:flutter/material.dart';
 import '../utilities/constants.dart';
-import '../widgets/CustomBottomNavBar.dart';
 import '../widgets/ProfileMenuWidget.dart';
 import '../widgets/RoundedColoredButton.dart';
 
+class ProfileInfos{
+  String name;
+  String email;
+  String phone;
+  String image;
+  String location;
+  String password;
+  ProfileInfos(
+      this.name, this.email, this.phone, this.image, this.location, this.password
+      );
+}
+
+Future<ProfileInfos> getProfileInfos() async{
+  return ProfileInfos(
+    "Afnane Touhar",
+    "ja_touhar@esi.dz",
+    "05555555",
+    "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png",
+    "Algiers, Algeria",
+    "********"
+  );
+}
+
 class Profile extends StatelessWidget{
-  String link='https://images.pexels.com/photos/3307758/pexels-photo-3307758.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=250';
-  String name='Afnane Touhar';
-  String email='ja_afnane@esi.dz';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        margin: EdgeInsets.only(top: 40),
-        child: Column(
-          children: [
-            CircleAvatar(
-              backgroundImage: NetworkImage(link),
-              radius: 50,
-            ),
-            Container(
-              margin: const EdgeInsets.only(top: 20),
-              child: Text(
-                name,
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  fontSize: 18,
-                  color: Colors.black
+        body: FutureBuilder<ProfileInfos>(
+        future: getProfileInfos(),
+        builder: (context, snapshot){
+          if (snapshot.connectionState == ConnectionState.waiting) {
+          // Display a loading indicator while waiting for the data
+          return const CircularProgressIndicator();
+          } else if (snapshot.hasError) {
+          // Display an error message if there was an error retrieving the data
+          return Text('Error: ${snapshot.error}');
+          } else {
+          return Container(
+            margin: const EdgeInsets.only(top: 60),
+            child: Column(
+              children: [
+                Container(
+                  width: 120,
+                  height: 120,
+                  decoration: BoxDecoration(
+                      border: Border.all(
+                          width: 4,
+                          color: Theme.of(context).scaffoldBackgroundColor),
+                      boxShadow: [
+                        BoxShadow(
+                            spreadRadius: 2,
+                            blurRadius: 10,
+                            color: Colors.black.withOpacity(0.1),
+                            offset: const Offset(0, 10))
+                      ],
+                      shape: BoxShape.circle,
+                      image: DecorationImage(
+                          fit: BoxFit.cover,
+                          image: NetworkImage(snapshot.data!.image,))),
                 ),
-              ),
+                Container(
+                  margin: const EdgeInsets.only(top: 20),
+                  child: Text(
+                    snapshot.data!.name,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                        fontSize: 18,
+                        color: Colors.black
+                    ),
+                  ),
+                ),
+                Text(
+                  snapshot.data!.email,
+                  style: const TextStyle(
+                      fontSize: 13,
+                      color: cadetGray
+                  ),
+                ),
+                const SizedBox(
+                  height: 60,
+                ),
+                ProfileMenuWidget(
+                    icon: const Icon(Icons.person),
+                    label: 'Edit Profile',
+                    onClick: () => {
+                    Navigator.of(context)
+                        .pushNamed("/edit",
+                    arguments: snapshot.data)
+                    },
+                ),
+                ProfileMenuWidget(
+                    icon: const Icon(Icons.admin_panel_settings),
+                    label: 'Security',
+                    onClick: () => {
+                      Navigator.of(context)
+                          .pushNamed("/security",
+                          arguments: snapshot.data!.password)
+                    },
+                  ),
+                ProfileMenuWidget(
+                    icon: const Icon(Icons.help),
+                    label: 'Help',
+                    onClick: () => {
+                      Navigator.of(context)
+                          .pushNamed("/help")
+                    },),
+                const SizedBox(
+                  height: 60,
+                ),
+                RoundedColoredButton(
+                    width: 350,
+                    height: 50,
+                    text: 'Logout',
+                    textColor: Colors.white,
+                    fillColor: pastelRed,
+                    shadowBlurRadius: 8,
+                    onPressed: ()=>{})
+              ],
             ),
-            Text(
-              email,
-              style: const TextStyle(
-                fontSize: 13,
-                color: cadetGray
-              ),
-            ),
-            const SizedBox(
-              height: 35,
-            ),
-            ProfileMenuWidget(
-                icon: const Icon(Icons.person),
-                label: 'Edit Profile'),
-            ProfileMenuWidget(
-                icon: const Icon(Icons.notifications),
-                label: 'Notifications'),
-            ProfileMenuWidget(
-                icon: const Icon(Icons.checklist_rtl),
-                label: 'Tasks List'),
-            ProfileMenuWidget(
-                icon: const Icon(Icons.admin_panel_settings),
-                label: 'Security'),
-            ProfileMenuWidget(
-                icon: const Icon(Icons.help),
-                label: 'Help'),
-            const SizedBox(
-              height: 35,
-            ),
-            RoundedColoredButton(
-                width: 350,
-                height: 50,
-                text: 'Logout',
-                textColor: Colors.white,
-                fillColor: pastelRed,
-                shadowBlurRadius: 8,
-                onPressed: ()=>{})
-          ],
-        ),
+          );
+          }
+        }
       ),
-      bottomNavigationBar: CustomBottomNavBar(
-        icon1: const Icon(Icons.notifications),
-        icon2: const Icon(Icons.checklist_rtl),
-        icon3: const Icon(Icons.person),
-        label1: 'Notifications',
-        label2: "task's list",
-        label3: 'Profile',
-        selectedItemColor: mountainMeadow,
-        unselectedItemColor: Colors.black,
-
-      ),    );
+       );
     throw UnimplementedError();
   }
 

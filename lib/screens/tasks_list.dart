@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:innovit_2cs_project_paiement/widgets/CustomBottomNavBar.dart';
 import '../utilities/constants.dart';
-import 'task_details.dart';
 import 'notifications.dart';
 
 class TasksList extends StatefulWidget{
@@ -11,7 +9,7 @@ class TasksList extends StatefulWidget{
 }
 class TasksListState extends State<TasksList> {
   TasksListState({Key? key}) : super();
-  late List<Task> displayedList=taskslist.where((item) => item.opened==true).toList();
+  List<Task> displayedList=taskslist;
   late String sortValue='Date';
   void searchTasks(String search) {
     setState(() {
@@ -75,131 +73,118 @@ class TasksListState extends State<TasksList> {
         ],
       ),
       body: ListView.builder(
-        padding: const EdgeInsets.all(8),
-        itemCount: displayedList.length,
-        itemBuilder: (context, index){
-          final task = displayedList[index];
-          return ListTile(
-            title: GestureDetector(
-              onTap: () {
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //     builder: (context) => TaskDetails(task: task),
-                //   ),
-                // );
-              },
-              child: Container(
-                margin: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: mountainMeadow.withOpacity(0.05),
-                  borderRadius: const BorderRadius.all(
-                    Radius.circular(10),
-                  ),
-                ),
-                padding: const EdgeInsets.all(20.0),
-                child:Column(
-                  children: [
-                    Container(
-                      padding:const EdgeInsets.only(bottom:20),
-                      child:  Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            task.date,
-                            style: const TextStyle(
-                              fontSize: 13,
-                              color: cadetGray,
-                            ),
-                          ),
-                          Text(
-                            task.heure,
-                            style: const TextStyle(
-                              fontSize: 13,
-                              color: cadetGray,
-                            ),
-                          ),
-                        ],
+            padding: const EdgeInsets.all(8),
+            itemCount: displayedList.length,
+            itemBuilder: (context, index){
+              final task = displayedList[index];
+              return ListTile(
+                title: GestureDetector(
+                  onTap: () {
+                    Navigator.of(context)
+                        .pushNamed("/details",
+                        arguments: task);
+                  },
+                  child: Container(
+                    margin: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: mountainMeadow.withOpacity(0.05),
+                      borderRadius: const BorderRadius.all(
+                        Radius.circular(10),
                       ),
                     ),
-                    Row(
+                    padding: const EdgeInsets.all(20.0),
+                    child:Column(
                       children: [
                         Container(
-                          margin: const EdgeInsets.only(right:15),
-                          child: const Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                          padding:const EdgeInsets.only(bottom:20),
+                          child:  Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                'Distributeur :',
-                                style: TextStyle(
+                                task.date,
+                                style: const TextStyle(
                                   fontSize: 13,
-                                  color: Colors.black,
+                                  color: cadetGray,
                                 ),
                               ),
                               Text(
-                                'Message :',
-                                style: TextStyle(
+                                task.heure,
+                                style: const TextStyle(
                                   fontSize: 13,
-                                  color: Colors.black,
-                                ),
-                              ),
-                              Text(
-                                'Etat :',
-                                style: TextStyle(
-                                  fontSize: 13,
-                                  color: Colors.black,
+                                  color: cadetGray,
                                 ),
                               ),
                             ],
                           ),
                         ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                        Row(
                           children: [
-                            Text(
-                              task.id.toString(),
-                              style: const TextStyle(
-                                fontSize: 13,
-                                color: Colors.black,
+                            Container(
+                              margin: const EdgeInsets.only(right:15),
+                              child: const Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Distributeur :',
+                                    style: TextStyle(
+                                      fontSize: 13,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                  Text(
+                                    'Message :',
+                                    style: TextStyle(
+                                      fontSize: 13,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                  Text(
+                                    'Etat :',
+                                    style: TextStyle(
+                                      fontSize: 13,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
-                            Text(
-                              task.message,
-                              style: const TextStyle(
-                                fontSize: 13,
-                                color: pastelRed,
-                              ),
-                            ),
-                            Text(
-                              task.etat,
-                              style: TextStyle(
-                                fontSize: 13,
-                                color: task.etat=="TO DO" ? pastelRed : mountainMeadow,
-                              ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  task.id.toString(),
+                                  style: const TextStyle(
+                                    fontSize: 13,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                                Text(
+                                  task.message,
+                                  style: const TextStyle(
+                                    fontSize: 13,
+                                    color: pastelRed,
+                                  ),
+                                ),
+                                Text(
+                                  task.etat,
+                                  style: TextStyle(
+                                    fontSize: 13,
+                                    color: task.etat=="TO DO" ? pastelRed : mountainMeadow,
+                                  ),
+                                ),
+                              ],
                             ),
                           ],
                         ),
                       ],
                     ),
-                  ],
+                  ),
                 ),
-              ),
-            ),
 
 
-          );
-        },
-      ),
-      bottomNavigationBar: CustomBottomNavBar(
-        icon1: const Icon(Icons.notifications),
-        icon2: const Icon(Icons.checklist_rtl),
-        icon3: const Icon(Icons.person),
-        label1: 'Notifications',
-        label2: "task's list",
-        label3: 'Profile',
-        selectedItemColor: mountainMeadow,
-        unselectedItemColor: Colors.black,
-      ),
+              );
+            },
+          ),
     );
   }
 }

@@ -7,6 +7,7 @@ class Security extends StatelessWidget{
   const Security({super.key});
   @override
   Widget build(BuildContext context) {
+    String password = ModalRoute.of(context)!.settings.arguments as String;
     return Scaffold(
       appBar:  AppBar(
         leading: IconButton(
