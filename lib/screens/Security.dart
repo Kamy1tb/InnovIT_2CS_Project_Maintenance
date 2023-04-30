@@ -26,40 +26,42 @@ class Security extends StatelessWidget{
         centerTitle: true,
         iconTheme: const IconThemeData(color: Colors.black),
       ),
-      body: ListView(
-        children: [
-          const SizedBox(
-            height: 80,
-          ),
-          PasswordInputWidget(label: "Current password"),
-          PasswordInputWidget(label: "New password"),
-          PasswordInputWidget(label: "Re-type new password"),
-          const SizedBox(
-            height: 35,
-          ),
-          Container(
-            margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-            child: RoundedColoredButton(
-                width: 350,
-                height: 50,
-                text: 'Save changes',
-                textColor: Colors.white,
-                fillColor: mountainMeadow,
-                shadowBlurRadius: 4,
-                onPressed: ()=>{}),
-          ),
-          Container(
-            margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-            child: RoundedColoredButton(
-                width: 350,
-                height: 50,
-                text: 'Cancel',
-                textColor: Colors.black.withOpacity(0.6),
-                fillColor: mountainMeadow.withOpacity(0.3),
-                shadowBlurRadius: 0,
-                onPressed: ()=>{}),
-          )
-        ],
+      body: SafeArea(
+        child: ListView(
+          children: [
+            const SizedBox(
+              height: 80,
+            ),
+            PasswordInputWidget(label: "Current password"),
+            PasswordInputWidget(label: "New password"),
+            PasswordInputWidget(label: "Re-type new password"),
+            const SizedBox(
+              height: 35,
+            ),
+            Container(
+              margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+              child: RoundedColoredButton(
+                  width: 350,
+                  height: 50,
+                  text: 'Save changes',
+                  textColor: Colors.white,
+                  fillColor: mountainMeadow,
+                  shadowBlurRadius: 4,
+                  onPressed: ()=>{}),
+            ),
+            Container(
+              margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+              child: RoundedColoredButton(
+                  width: 350,
+                  height: 50,
+                  text: 'Cancel',
+                  textColor: Colors.black.withOpacity(0.6),
+                  fillColor: Color(0xffbce4d4),
+                  shadowBlurRadius: 0,
+                  onPressed: ()=>{}),
+            )
+          ],
+        ),
       ),
     );    throw UnimplementedError();
   }

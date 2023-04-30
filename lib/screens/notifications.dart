@@ -17,12 +17,19 @@ Future<List<Task>> getTasks() async {
   // Retrieve tasks from a database or any other source of data
   // Return a List<Task>
   return [
-    Task(1,'04 mars 2023','03:00 PM','ESI Alger', "Mecanisme bloque",'Rupture de stock', "TO DO", false),
-    Task(2,'05 mars 2023','07:00 PM','EPAU', "Disconnected",'Rupture de stock', "TO DO", false),
-    Task(3,'05 mars 2023','09:00 AM','USTHB', "Manque d'ingredients",'Rupture de stock', "TO DO", false),
+    Task(1,'15 mars 2023','03:00 PM','ESI Alger', "Mecanisme bloque",'Rupture de stock', "DONE", true),
+    Task(2,'05 mars 2023','07:00 PM','EPAU', "Disconnected",'Rupture de stock', "DONE", true),
+    Task(3,'05 mars 2023','09:00 AM','USTHB', "Manque d'ingredients",'Rupture de stock', "TO DO", true),
     Task(4,'06 mars 2023','04:00 PM','SOGRAL', "Manque d'ingredients",'Rupture de stock', "TO DO", true),
     Task(5,'06 mars 2023','08:00 AM','City Center Alger', "Manque d'ingredients",'Rupture de stock', "TO DO", false),
     Task(6,'06 mars 2023','04:50 PM','CUB1', "Manque d'ingredients",'Rupture de stock', "DONE", true),
+    Task(7,'08 mars 2023','03:00 PM','ESI Alger', "Mecanisme bloque",'Rupture de stock', "TO DO", true),
+    Task(8,'08 mars 2023','07:00 PM','EPAU', "Disconnected",'Rupture de stock', "TO DO", true),
+    Task(9,'09 mars 2023','03:00 PM','ESI Alger', "Mecanisme bloque",'Rupture de stock', "TO DO", false),
+    Task(10,'09 mars 2023','03:00 PM','ESI Alger', "Disconnected",'Rupture de stock', "TO DO", true),
+    Task(11,'09 mars 2023','03:00 PM','ESI Alger', "Manque d'ingredients",'Rupture de stock', "TO DO", false),
+    Task(12,'13 mars 2023','03:00 PM','ESI Alger', "Mecanisme bloque",'Rupture de stock', "TO DO", false),
+
   ];
 }
 List<Task> taskslist=[];
@@ -59,14 +66,9 @@ class NotificationsState extends State<Notifications> {
                 return ListTile(
                   title: GestureDetector(
                     onTap: () {
-                      // Navigator.of(context)
-                      //     .pushNamed("/details",
-                      //     arguments: notifs[index]);
-                      setState(() {
-                        snapshot.data![index].opened=true;
-                        taskslist.add(task);
-                        notifs.removeAt(index);
-                      });
+                      Navigator.of(context)
+                          .pushNamed("/details",
+                          arguments: notifs[index]);
                     },
                     child: Container(
                       margin: const EdgeInsets.all(8),

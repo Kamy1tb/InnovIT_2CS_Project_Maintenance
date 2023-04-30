@@ -113,7 +113,7 @@ class Profile extends StatelessWidget{
                   height: 60,
                 ),
                 RoundedColoredButton(
-                    width: 350,
+                    width: (MediaQuery.of(context).size.width * 4) / 5,
                     height: 50,
                     text: 'Logout',
                     textColor: Colors.white,

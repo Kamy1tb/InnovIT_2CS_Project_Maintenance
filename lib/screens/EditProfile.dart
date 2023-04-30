@@ -100,7 +100,7 @@ class _EditProfileState extends State<EditProfile>{
                       height: 35,
                     ),
                     Container(
-                      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 26),
                       child: TextField(
                         style: const TextStyle(
                           fontSize: 14,
@@ -120,7 +120,7 @@ class _EditProfileState extends State<EditProfile>{
                       ),
                     ),
                     Container(
-                      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 26),
                       child: TextField(
                         keyboardType: TextInputType.emailAddress,
                         style: const TextStyle(
@@ -141,7 +141,7 @@ class _EditProfileState extends State<EditProfile>{
                       ),
                     ),
                     Container(
-                      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 26),
                       child: TextField(
                         keyboardType: TextInputType.number,
                         style: const TextStyle(
@@ -162,7 +162,7 @@ class _EditProfileState extends State<EditProfile>{
                       ),
                     ),
                     Container(
-                      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 26),
                       child: TextField(
                         style: const TextStyle(
                           fontSize: 14,

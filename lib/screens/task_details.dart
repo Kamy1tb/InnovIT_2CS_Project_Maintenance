@@ -20,7 +20,7 @@ class _TaskDetailsState extends State<TaskDetails> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.pop(context, task.etat);
           },
         ),
         title: const Text(
@@ -161,7 +161,7 @@ class _TaskDetailsState extends State<TaskDetails> {
                   onChanged: (newStatus) {
                     setState(() {
                       _selectedStatus = newStatus!;
-                      //update query
+                      task.etat=newStatus;
                     });
                     // Update the task status in your data model or database
                   },

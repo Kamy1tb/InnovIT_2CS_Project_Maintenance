@@ -23,6 +23,10 @@ class _HomePageState extends State<HomePage> {
   void onTabTapped(int index) {
     setState(() {
       selectedIndex = index;
+      if (index==0){
+        taskslist.addAll(notifs);
+        notifs.removeWhere((element) => 1==1);
+      }
     });
   }
   @override
@@ -42,7 +46,7 @@ class _HomePageState extends State<HomePage> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.checklist_rtl),
-            label: "task's list",
+            label: "tasks list",
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),

@@ -1,0 +1,12 @@
+{
+  "user":[
+  {
+    "name": "Afnane Touhar",
+    "email": "ja_touhar@esi.dz",
+    "phone": "0555555555",
+    "image": "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png",
+    "location": "Algiers, Algeria",
+    "password": "12345678"
+  }
+]
+}
