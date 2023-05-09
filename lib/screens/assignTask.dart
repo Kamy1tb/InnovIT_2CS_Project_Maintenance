@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
-import '../utilities/constants.dart';
+import 'package:innovit_2cs_project_paiement/utilities/constants.dart';
+import 'package:innovit_2cs_project_paiement/utilities/functions.dart';
+import 'package:innovit_2cs_project_paiement/widgets/RoundedColoredButton.dart';
 import '../viewmodels/Task.dart';
-
-class TaskDetails extends StatefulWidget{
-  const TaskDetails({super.key});
+import '../global.dart' as global;
+class AssignTask extends StatefulWidget{
+  const AssignTask({super.key});
 
   @override
-  State<TaskDetails> createState() => _TaskDetailsState();
+  State<AssignTask> createState() => _AssignTaskState();
 }
 
-class _TaskDetailsState extends State<TaskDetails> {
+class _AssignTaskState extends State<AssignTask> {
   late Task task = ModalRoute.of(context)!.settings.arguments as Task;
-  List<String> _statusOptions = ['TO DO', 'DONE'];
-  late String _selectedStatus= task.etat;
 
   @override
   Widget build(BuildContext context) {
-        return Scaffold(
+    return Scaffold(
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
@@ -27,7 +27,7 @@ class _TaskDetailsState extends State<TaskDetails> {
         title: const Text(
           "Task's Details",
           style: TextStyle(
-            color: Colors.black
+              color: Colors.black
           ),),
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -89,7 +89,7 @@ class _TaskDetailsState extends State<TaskDetails> {
                       ),
                     ),
                     Text(
-                      'Etat :',
+                      'Assigned To :',
                       style: TextStyle(
                         fontSize: 15,
                         color: Colors.black,
@@ -146,31 +146,34 @@ class _TaskDetailsState extends State<TaskDetails> {
                         color: Colors.black,
                       ),
                     ),
-                DropdownButton<String>(
-                  isDense: true,
-                  value: _selectedStatus,
-                  items: _statusOptions.map((String status) {
-                    return DropdownMenuItem<String>(
-                      value: status,
-                      child: Text(
-                          status,
-                          style: TextStyle(color: status =='TO DO'?pastelRed:mountainMeadow),
+                    Text(
+                      task.idUser!= null? task.idUser.toString() : "None",
+                      style: const TextStyle(
+                        fontSize: 15,
+                        color: Colors.black,
                       ),
-                    );
-                  }).toList(),
+                    ),
 
-                  onChanged: (newStatus) {
-                    setState(() {
-                      _selectedStatus = newStatus!;
-                      task.etat=newStatus;
-                    });
-                    // Update the task status in your data model or database
-                  },
-                )
-                ],
+                  ],
 
                 ),
               ),
+              Container(
+                child: task.idUser==null?
+                    RoundedColoredButton(
+                        width: 350,
+                        height: 50,
+                        text: "Add to My Tasks",
+                        textColor: Colors.white,
+                        fillColor: pastelRed,
+                        shadowBlurRadius: 0,
+                        onPressed: ()=>{
+                          assignTaskAM(global.globalSessionData!.userId, task.id)
+                        }):
+                    const SizedBox(
+                      height:5
+                    )
+              )
             ],
           ),
         ),) ,

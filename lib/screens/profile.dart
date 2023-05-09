@@ -1,37 +1,32 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import '../utilities/constants.dart';
+import '../viewmodels/User.dart';
 import '../widgets/ProfileMenuWidget.dart';
 import '../widgets/RoundedColoredButton.dart';
+import 'package:http/http.dart'as http;
 
-class ProfileInfos{
-  String name;
-  String email;
-  String phone;
-  String image;
-  String location;
-  String password;
-  ProfileInfos(
-      this.name, this.email, this.phone, this.image, this.location, this.password
-      );
-}
-
-Future<ProfileInfos> getProfileInfos() async{
-  return ProfileInfos(
-    "Afnane Touhar",
-    "ja_touhar@esi.dz",
-    "05555555",
-    "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png",
-    "Algiers, Algeria",
-    "********"
-  );
+Future<User> UserInfos(int idUser) async{
+  final url = Uri.parse('${dotenv.env["BASE_URL"]}/users?id=$idUser');
+  final response = await http.get(url);
+  if (response.statusCode == 200) {
+    User user = jsonDecode(response.body);
+    return user;
+  } else {
+    throw Exception('failed to load User information,error code: ${response.statusCode}');
+  }
 }
 
 class Profile extends StatelessWidget{
+  late Future<User> user;
   @override
   Widget build(BuildContext context) {
+    user=UserInfos(1);
     return Scaffold(
-        body: FutureBuilder<ProfileInfos>(
-        future: getProfileInfos(),
+        body: FutureBuilder<User>(
+        future: user,
         builder: (context, snapshot){
           if (snapshot.connectionState == ConnectionState.waiting) {
           // Display a loading indicator while waiting for the data

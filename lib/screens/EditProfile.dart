@@ -1,19 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:innovit_2cs_project_paiement/utilities/constants.dart';
 import 'package:innovit_2cs_project_paiement/widgets/RoundedColoredButton.dart';
-
-import 'profile.dart';
+import '../viewmodels/User.dart';
 
 class EditProfile extends StatefulWidget{
   const EditProfile({super.key});
-
   @override
   _EditProfileState createState() => _EditProfileState();
 }
 class _EditProfileState extends State<EditProfile>{
   @override
   Widget build(BuildContext context) {
-    ProfileInfos user=ModalRoute.of(context)!.settings.arguments as ProfileInfos;
+    User user=ModalRoute.of(context)!.settings.arguments as User;
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(

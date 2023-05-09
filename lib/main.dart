@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:innovit_2cs_project_paiement/screens/HomePage.dart';
 
-import 'package:innovit_2cs_project_paiement/screens/notifications.dart';
-import 'package:innovit_2cs_project_paiement/screens/tasks_list.dart';
+import 'package:innovit_2cs_project_paiement/screens/tasksList.dart';
+import 'package:innovit_2cs_project_paiement/screens/mytasks.dart';
 import 'package:innovit_2cs_project_paiement/screens/profile.dart';
 import 'package:innovit_2cs_project_paiement/screens/EditProfile.dart';
 import 'package:innovit_2cs_project_paiement/screens/Security.dart';
@@ -11,9 +11,14 @@ import 'package:innovit_2cs_project_paiement/screens/Help.dart';
 
 import 'package:innovit_2cs_project_paiement/screens/task_details.dart';
 import 'package:innovit_2cs_project_paiement/widgets/appBar.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-void main() {
-  runApp(const MyApp());
+Future main() async {
+  await dotenv.load(fileName: ".env");// mergeWith optional, you can include Platform.environment for Mobile/Desktop app
+
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -24,8 +29,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       routes: {
-        "/notifications": (_) => const Notifications(),
-        "/tasks": (_) => const TasksList(),
+        "/notifications": (_) => const TasksList(),
+        "/tasks": (_) => const MyTasks(),
         "/details": (_) => const TaskDetails(),
         "/profile": (_) => Profile(),
         "/edit" : (_) => EditProfile(),
@@ -40,52 +45,3 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: const CustomizedAppBar(
-        title: 'InnovIT',
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            SvgPicture.asset(
-              '../assets/logo/logo.svg',
-            ),
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
-    );
-  }
-}

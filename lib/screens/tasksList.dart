@@ -1,74 +1,54 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import '../utilities/constants.dart';
-class Task
-{
-  int id;
-  String date;
-  String heure;
-  String entreprise;
-  String message;
-  String type;
-  String etat;
-  bool opened;
-  Task(this.id, this.date, this.heure, this.entreprise, this.message, this.type, this.etat, this.opened);
-}
+import '../utilities/functions.dart';
+import '../viewmodels/Task.dart';
+import '../global.dart' as global;
 
-Future<List<Task>> getTasks() async {
-  // Retrieve tasks from a database or any other source of data
-  // Return a List<Task>
-  return [
-    Task(1,'15 mars 2023','03:00 PM','ESI Alger', "Mecanisme bloque",'Rupture de stock', "DONE", true),
-    Task(2,'05 mars 2023','07:00 PM','EPAU', "Disconnected",'Rupture de stock', "DONE", true),
-    Task(3,'05 mars 2023','09:00 AM','USTHB', "Manque d'ingredients",'Rupture de stock', "TO DO", true),
-    Task(4,'06 mars 2023','04:00 PM','SOGRAL', "Manque d'ingredients",'Rupture de stock', "TO DO", true),
-    Task(5,'06 mars 2023','08:00 AM','City Center Alger', "Manque d'ingredients",'Rupture de stock', "TO DO", false),
-    Task(6,'06 mars 2023','04:50 PM','CUB1', "Manque d'ingredients",'Rupture de stock', "DONE", true),
-    Task(7,'08 mars 2023','03:00 PM','ESI Alger', "Mecanisme bloque",'Rupture de stock', "TO DO", true),
-    Task(8,'08 mars 2023','07:00 PM','EPAU', "Disconnected",'Rupture de stock', "TO DO", true),
-    Task(9,'09 mars 2023','03:00 PM','ESI Alger', "Mecanisme bloque",'Rupture de stock', "TO DO", false),
-    Task(10,'09 mars 2023','03:00 PM','ESI Alger', "Disconnected",'Rupture de stock', "TO DO", true),
-    Task(11,'09 mars 2023','03:00 PM','ESI Alger', "Manque d'ingredients",'Rupture de stock', "TO DO", false),
-    Task(12,'13 mars 2023','03:00 PM','ESI Alger', "Mecanisme bloque",'Rupture de stock', "TO DO", false),
-
-  ];
-}
-List<Task> taskslist=[];
-List<Task> notifs=[];
-
-class Notifications extends StatefulWidget {
-  const Notifications({Key? key}) : super(key: key);
+//TasksList widget
+class TasksList extends StatefulWidget {
+  const TasksList({Key? key}) : super(key: key);
   @override
-  NotificationsState createState() => NotificationsState();
+  TasksListState createState() => TasksListState();
 }
 
-class NotificationsState extends State<Notifications> {
-
+class TasksListState extends State<TasksList> {
+  late Future<List<Task>> tasks;
+  //Get the tasks
+  //Authentication - I have to get the user ID
+  @override
+  void initState() {
+    super.initState();
+    tasks = getTasks(global.globalSessionData!.userId);
+  }
+  Future<void> tasksToList() async {
+    final tasksList = await Future.wait(tasks as Iterable<Future>);
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: FutureBuilder<List<Task>>(
-        future: getTasks(),
+        future: tasks,
         builder: (context, snapshot){
-          if (snapshot.connectionState == ConnectionState.waiting) {
-          // Display a loading indicator while waiting for the data
-          return const CircularProgressIndicator();
-          } else if (snapshot.hasError) {
-          // Display an error message if there was an error retrieving the data
-          return Text('Error: ${snapshot.error}');
-          } else {
-            taskslist=snapshot.data!.where((task) => task.opened==true).toList();
-            notifs=snapshot.data!.where((task) => task.opened==false).toList();
+            if (snapshot.connectionState == ConnectionState.waiting) {
+            // Display a loading indicator while waiting for the data
+            return const CircularProgressIndicator();
+            } else if (snapshot.hasError) {
+            // Display an error message if there was an error retrieving the data
+            return Text('Error: ${snapshot.error}');
+            } else {
             return ListView.builder(
               padding: const EdgeInsets.fromLTRB(5, 30, 5, 8),
-              itemCount: notifs.length,
+              itemCount: snapshot.data!.length,
               itemBuilder: (context, index){
-                final task = notifs[index];
+                final task = snapshot.data![index];
                 return ListTile(
                   title: GestureDetector(
                     onTap: () {
                       Navigator.of(context)
                           .pushNamed("/details",
-                          arguments: notifs[index]);
+                          arguments: snapshot.data![index]);
                     },
                     child: Container(
                       margin: const EdgeInsets.all(8),
@@ -118,14 +98,14 @@ class NotificationsState extends State<Notifications> {
                                       ),
                                     ),
                                     Text(
-                                      'Message :',
+                                      'Type :',
                                       style: TextStyle(
                                         fontSize: 13,
                                         color: Colors.black,
                                       ),
                                     ),
                                     Text(
-                                      'Etat :',
+                                      'Assigned To :',
                                       style: TextStyle(
                                         fontSize: 13,
                                         color: Colors.black,
@@ -145,17 +125,17 @@ class NotificationsState extends State<Notifications> {
                                     ),
                                   ),
                                   Text(
-                                    task.message,
+                                    task.type,
                                     style: const TextStyle(
                                       fontSize: 13,
                                       color: pastelRed,
                                     ),
                                   ),
                                   Text(
-                                    task.etat,
+                                    task.idUser==null? "None" : task.idUser.toString(),
                                     style: TextStyle(
                                       fontSize: 13,
-                                      color: task.etat=="TO DO" ? pastelRed : mountainMeadow,
+                                      color: task.idUser == null ? pastelRed : mountainMeadow,
                                     ),
                                   ),
                                 ],

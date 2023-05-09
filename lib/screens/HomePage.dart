@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:innovit_2cs_project_paiement/screens/profile.dart';
-import 'package:innovit_2cs_project_paiement/screens/tasks_list.dart';
+import 'package:innovit_2cs_project_paiement/screens/mytasks.dart';
 
 import '../utilities/constants.dart';
-import 'notifications.dart';
+import 'tasksList.dart';
 
 
 class HomePage extends StatefulWidget {
@@ -16,17 +16,13 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int selectedIndex=0;
   final screens=[
-    Notifications(),
     TasksList(),
+    MyTasks(),
     Profile()
   ];
   void onTabTapped(int index) {
     setState(() {
       selectedIndex = index;
-      if (index==0){
-        taskslist.addAll(notifs);
-        notifs.removeWhere((element) => 1==1);
-      }
     });
   }
   @override
@@ -41,12 +37,12 @@ class _HomePageState extends State<HomePage> {
         onTap: (index)=>setState(() => selectedIndex=index),
         items: const [
           BottomNavigationBarItem(
-              icon: Icon(Icons.notifications),
-              label: 'Notifications'
+              icon: Icon(Icons.checklist_rtl),
+              label: 'All tasks'
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.checklist_rtl),
-            label: "tasks list",
+            icon: Icon(Icons.check_circle_outline),
+            label: "My tasks",
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
