@@ -159,26 +159,6 @@ class _EditProfileState extends State<EditProfile>{
                         ),
                       ),
                     ),
-                    Container(
-                      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 26),
-                      child: TextField(
-                        style: const TextStyle(
-                          fontSize: 14,
-                        ),
-                        controller:TextEditingController(text: user.location),
-                        decoration: InputDecoration(
-                            focusedBorder:OutlineInputBorder(
-                              borderSide: const BorderSide(color: cadetGray, width: 1.0),
-                              borderRadius: BorderRadius.circular(20.0),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide:const BorderSide(width: 1, color: cadetGray),
-                              borderRadius:  BorderRadius.circular(20.0),
-                            ),
-                            labelText: "Location"
-                        ),
-                      ),
-                    ),
                     const SizedBox(
                       height: 35,
                     ),

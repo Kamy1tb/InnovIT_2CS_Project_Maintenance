@@ -5,7 +5,7 @@ import '../viewmodels/Task.dart';
 
 
 Future<List<Task>> getTasks(idUser) async {
-  final url = Uri.parse('${dotenv.env["BASE_URL"]}/maintenance/getTasks/$idUser');
+  final url = Uri.parse('${dotenv.env["BASE_URL"]}/maintenance/tasks/$idUser');
   final response = await http.get(url);
   if (response.statusCode == 200) {
     List myList = jsonDecode(response.body);
@@ -15,7 +15,7 @@ Future<List<Task>> getTasks(idUser) async {
   }
 }
 Future<List<Task>> getTasksFree(idUser) async {
-  final url = Uri.parse('${dotenv.env["BASE_URL"]}/maintenance/getTasksFree/$idUser');
+  final url = Uri.parse('${dotenv.env["BASE_URL"]}/maintenance/tasks/state/unassigned/$idUser');
   final response = await http.get(url);
   if (response.statusCode == 200) {
     List myList = jsonDecode(response.body);
@@ -26,7 +26,27 @@ Future<List<Task>> getTasksFree(idUser) async {
 
 }
 Future<List<Task>> getTasksAM(idUser) async {
-  final url = Uri.parse('${dotenv.env["BASE_URL"]}/maintenance/getTasksAM/$idUser');
+  final url = Uri.parse('${dotenv.env["BASE_URL"]}/maintenance/AM/tasks/$idUser');
+  final response = await http.get(url);
+  if (response.statusCode == 200) {
+    List myList = jsonDecode(response.body);
+    return myList.map((e) => Task.fromJson(e)).toList();
+  } else {
+    throw Exception('failed to load tasks,error code: ${response.statusCode}');
+  }
+}
+Future<List<Task>> getDoneTasks(idUser) async {
+  final url = Uri.parse('${dotenv.env["BASE_URL"]}/maintenance/tasks/AM/state?idAM=${idUser}&state=true');
+  final response = await http.get(url);
+  if (response.statusCode == 200) {
+    List myList = jsonDecode(response.body);
+    return myList.map((e) => Task.fromJson(e)).toList();
+  } else {
+    throw Exception('failed to load tasks,error code: ${response.statusCode}');
+  }
+}
+Future<List<Task>> getUnDoneTasks(idUser) async {
+  final url = Uri.parse('${dotenv.env["BASE_URL"]}/maintenance/tasks/AM/state?idAM=${idUser}&state=false');
   final response = await http.get(url);
   if (response.statusCode == 200) {
     List myList = jsonDecode(response.body);
@@ -47,9 +67,9 @@ Future<Task> getTasksInfo(idTask) async {
 
 }
 
-Future<http.Response> assignTaskAM(int idUser,int idTask){
- final url = Uri.parse('${dotenv.env["BASE_URL"]}/maintenance/assignTaskAM/$idUser/$idTask');
-  return http.post(url,
+Future<void> assignTaskAM(int idUser, int idTask) async{
+  final url = Uri.parse('${dotenv.env["BASE_URL"]}/maintenance/tasks/AM/assign');
+  final response = await http.post(url,
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -57,17 +77,28 @@ Future<http.Response> assignTaskAM(int idUser,int idTask){
         'id': idTask,
         'idUser': idUser,
       }));
+  if (response.statusCode == 200) {
+    print('Task assigned to person successfully');
+  } else {
+    throw Exception('Failed to assign task || error code : ${response.statusCode}');
+  }
+
 }
 
-Future<http.Response> switchStateTask(idTask){
-    final url = Uri.parse('${dotenv.env["BASE_URL"]}/maintenance/switchStateTask/$idTask');
-  return http.post(url,
+Future<void> switchStateTask(idTask) async{
+    final url = Uri.parse('${dotenv.env["BASE_URL"]}/maintenance/tasks/AM/task/state/$idTask');
+  final response = await http.post(url,
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
       body: jsonEncode(<String, dynamic>{
         'id': idTask,
       }));
+    if (response.statusCode == 200) {
+      print('Task assigned to person successfully');
+    } else {
+      throw Exception('Failed to switch state || error code : ${response.statusCode}');
+    }
 }
 
 

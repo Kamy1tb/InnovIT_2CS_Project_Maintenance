@@ -5,10 +5,11 @@ import '../utilities/constants.dart';
 
 class PasswordInputWidget extends StatelessWidget{
   String label;
-
+  TextEditingController controller;
   PasswordInputWidget({
     Key? key,
     required this.label,
+    required this.controller
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -16,6 +17,7 @@ class PasswordInputWidget extends StatelessWidget{
       child: Container(
         margin: const EdgeInsets.symmetric(vertical: 8,horizontal: 30),
         child: TextField(
+          controller: controller,
           obscureText: true,
           style: const TextStyle(
             fontSize: 14,

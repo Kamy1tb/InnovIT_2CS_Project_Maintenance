@@ -38,141 +38,151 @@ class _AssignTaskState extends State<AssignTask> {
         padding: const EdgeInsets.all(15),
         child: Container(
           margin: const EdgeInsets.fromLTRB(10,80,10,0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          child: Column(
             children: [
-              const SizedBox(
-                height: 320,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Date :',
-                      style: TextStyle(
-                        fontSize: 15,
-                        color: Colors.black,
-                      ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const SizedBox(
+                    height: 320,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Date :',
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: Colors.black,
+                          ),
+                        ),
+                        Text(
+                          'Time :',
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: Colors.black,
+                          ),
+                        ),
+                        Text(
+                          'Company :',
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: Colors.black,
+                          ),
+                        ),
+                        Text(
+                          'SmartBev :',
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: Colors.black,
+                          ),
+                        ),
+                        Text(
+                          'Type :',
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: Colors.black,
+                          ),
+                        ),Text(
+                          'Message :',
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: Colors.black,
+                          ),
+                        ),
+                        Text(
+                          'Assigned To :',
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ],
                     ),
-                    Text(
-                      'Heure :',
-                      style: TextStyle(
-                        fontSize: 15,
-                        color: Colors.black,
-                      ),
+                  ),
+                  SizedBox(
+                    height: 320,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          task.date,
+                          style: const TextStyle(
+                            fontSize: 15,
+                            color: Colors.black,
+                          ),
+                        ),
+                        Text(
+                          task.heure,
+                          style: const TextStyle(
+                            fontSize: 15,
+                            color: Colors.black,
+                          ),
+                        ),
+                        Text(
+                          task.entreprise,
+                          style: const TextStyle(
+                            fontSize: 15,
+                            color: Colors.black,
+                          ),
+                        ),
+                        Text(
+                          task.id.toString(),
+                          style: const TextStyle(
+                            fontSize: 15,
+                            color: Colors.black,
+                          ),
+                        ),
+                        Text(
+                          task.type,
+                          style: const TextStyle(
+                            fontSize: 15,
+                            color: Colors.black,
+                          ),
+                        ),
+                        Container(
+                          width: 200,
+                          child: Text(
+                            task.message != null ? task.message! : "No message",
+                            style: const TextStyle(
+                              fontSize: 15,
+                              color: pastelRed,
+                            ),
+                          ),
+                        ),
+                        Text(
+                          task.username != null ? task.username! : "None",
+                          style: const TextStyle(
+                            fontSize: 15,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ],
+
                     ),
-                    Text(
-                      'Entreprise :',
-                      style: TextStyle(
-                        fontSize: 15,
-                        color: Colors.black,
-                      ),
-                    ),
-                    Text(
-                      'Distributeur :',
-                      style: TextStyle(
-                        fontSize: 15,
-                        color: Colors.black,
-                      ),
-                    ),
-                    Text(
-                      'Type :',
-                      style: TextStyle(
-                        fontSize: 15,
-                        color: Colors.black,
-                      ),
-                    ),Text(
-                      'Message :',
-                      style: TextStyle(
-                        fontSize: 15,
-                        color: Colors.black,
-                      ),
-                    ),
-                    Text(
-                      'Assigned To :',
-                      style: TextStyle(
-                        fontSize: 15,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+
+                ],
               ),
-              SizedBox(
-                height: 320,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      task.date,
-                      style: const TextStyle(
-                        fontSize: 15,
-                        color: Colors.black,
-                      ),
-                    ),
-                    Text(
-                      task.heure,
-                      style: const TextStyle(
-                        fontSize: 15,
-                        color: Colors.black,
-                      ),
-                    ),
-                    Text(
-                      task.entreprise,
-                      style: const TextStyle(
-                        fontSize: 15,
-                        color: Colors.black,
-                      ),
-                    ),
-                    Text(
-                      task.id.toString(),
-                      style: const TextStyle(
-                        fontSize: 15,
-                        color: Colors.black,
-                      ),
-                    ),
-                    Text(
-                      task.type,
-                      style: const TextStyle(
-                        fontSize: 15,
-                        color: Colors.black,
-                      ),
-                    ),
-                    Text(
-                      task.message,
-                      style: const TextStyle(
-                        fontSize: 15,
-                        color: Colors.black,
-                      ),
-                    ),
-                    Text(
-                      task.idUser!= null? task.idUser.toString() : "None",
-                      style: const TextStyle(
-                        fontSize: 15,
-                        color: Colors.black,
-                      ),
-                    ),
-
-                  ],
-
-                ),
+              const SizedBox(
+                height: 50,
               ),
               Container(
-                child: task.idUser==null?
-                    RoundedColoredButton(
-                        width: 350,
-                        height: 50,
-                        text: "Add to My Tasks",
-                        textColor: Colors.white,
-                        fillColor: pastelRed,
-                        shadowBlurRadius: 0,
-                        onPressed: ()=>{
-                          assignTaskAM(global.globalSessionData!.userId, task.id)
-                        }):
-                    const SizedBox(
+                  child: task.idUser==null?
+                  RoundedColoredButton(
+                      width: 200,
+                      height: 50,
+                      text: "Add to My Tasks",
+                      textColor: Colors.white,
+                      fillColor: pastelRed,
+                      shadowBlurRadius: 0,
+                      onPressed: ()=>{
+                        assignTaskAM(global.globalSessionData!.userId, task.id)
+                      }):
+                  const SizedBox(
                       height:5
-                    )
+                  )
               )
             ],
           ),

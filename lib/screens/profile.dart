@@ -7,13 +7,13 @@ import '../viewmodels/User.dart';
 import '../widgets/ProfileMenuWidget.dart';
 import '../widgets/RoundedColoredButton.dart';
 import 'package:http/http.dart'as http;
+import '../global.dart' as global;
 
 Future<User> UserInfos(int idUser) async{
-  final url = Uri.parse('${dotenv.env["BASE_URL"]}/users?id=$idUser');
+  final url = Uri.parse('${dotenv.env["BASE_URL"]}/maintenance/users/$idUser');
   final response = await http.get(url);
   if (response.statusCode == 200) {
-    User user = jsonDecode(response.body);
-    return user;
+    return User.fromJson(jsonDecode(response.body));
   } else {
     throw Exception('failed to load User information,error code: ${response.statusCode}');
   }
@@ -23,17 +23,41 @@ class Profile extends StatelessWidget{
   late Future<User> user;
   @override
   Widget build(BuildContext context) {
-    user=UserInfos(1);
+    user=UserInfos(global.globalSessionData!.userId);
     return Scaffold(
         body: FutureBuilder<User>(
         future: user,
         builder: (context, snapshot){
           if (snapshot.connectionState == ConnectionState.waiting) {
           // Display a loading indicator while waiting for the data
-          return const CircularProgressIndicator();
+          return const Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Center(child: CircularProgressIndicator(
+                backgroundColor: Colors.black26,
+                valueColor: AlwaysStoppedAnimation<Color>(
+                  mountainMeadow, //<-- SEE HERE
+                ),
+              )),
+            ],
+          );
           } else if (snapshot.hasError) {
           // Display an error message if there was an error retrieving the data
-          return Text('Error: ${snapshot.error}');
+          return Container(
+            margin: const EdgeInsets.symmetric(vertical: 0,horizontal: 20),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Center(
+                  child: Text('Error: ${snapshot.error}',
+                    style: const TextStyle(
+                        color: pastelRed,
+                        fontSize: 14
+                    ),),
+                ),
+              ],
+            ),
+          );
           } else {
           return Container(
             margin: const EdgeInsets.only(top: 60),
@@ -114,7 +138,9 @@ class Profile extends StatelessWidget{
                     textColor: Colors.white,
                     fillColor: pastelRed,
                     shadowBlurRadius: 8,
-                    onPressed: ()=>{})
+                    onPressed: ()=>{
+                      global.clearSessionData()
+                    })
               ],
             ),
           );

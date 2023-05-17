@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:innovit_2cs_project_paiement/screens/HomePage.dart';
+import 'package:innovit_2cs_project_paiement/screens/SignInPage.dart';
+import 'package:innovit_2cs_project_paiement/screens/assignTask.dart';
 
 import 'package:innovit_2cs_project_paiement/screens/tasksList.dart';
 import 'package:innovit_2cs_project_paiement/screens/mytasks.dart';
@@ -29,18 +31,20 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       routes: {
-        "/notifications": (_) => const TasksList(),
-        "/tasks": (_) => const MyTasks(),
+        "/TasksList": (_) => const TasksList(),
+        "/MyTasks": (_) => const MyTasks(),
         "/details": (_) => const TaskDetails(),
+        "/assign": (_) => const AssignTask(),
         "/profile": (_) => Profile(),
         "/edit" : (_) => EditProfile(),
         "/security" : (_) => const Security(),
         "/help" : (_) => const Help(),
+        "/home" : (_) => HomePage()
       },
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(fontFamily: 'Outfit'),
-      home: HomePage(),
+      home: SignInPage(),
     );
   }
 }

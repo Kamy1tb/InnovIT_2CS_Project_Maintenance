@@ -4,7 +4,6 @@ class User{
   String email;
   String phone;
   String image;
-  String location;
   String password;
   User({
     required this.id,
@@ -12,7 +11,6 @@ class User{
     required this.email,
     required this.phone,
     required this.image,
-    required this.location,
     required this.password
   });
   factory User.fromJson(Map<String, dynamic> json) {
@@ -21,8 +19,7 @@ class User{
         name: json["nom"]+json["prenom"],
         email: json["mail"],
         phone: json["tel"],
-        image: json[""],
-        location: json[""],
+        image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSNiMV_OdBzb4xVwekrBop0crXIP3Rszoa2d363aMNi_iRUrsGiYUcnV2D79bXKx_G56pY&usqp=CAU",
         password: json["mdp"]);
   }
 }

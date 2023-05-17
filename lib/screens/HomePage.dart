@@ -4,8 +4,7 @@ import 'package:innovit_2cs_project_paiement/screens/mytasks.dart';
 
 import '../utilities/constants.dart';
 import 'tasksList.dart';
-
-
+import '../global.dart' as global;
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
@@ -25,10 +24,14 @@ class _HomePageState extends State<HomePage> {
       selectedIndex = index;
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: screens[selectedIndex],
+      body: IndexedStack(
+        index: selectedIndex,
+        children:screens
+      ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         selectedItemColor: mountainMeadow,

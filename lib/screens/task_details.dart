@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:innovit_2cs_project_paiement/utilities/functions.dart';
 import '../utilities/constants.dart';
 import '../viewmodels/Task.dart';
 
@@ -11,8 +12,8 @@ class TaskDetails extends StatefulWidget{
 
 class _TaskDetailsState extends State<TaskDetails> {
   late Task task = ModalRoute.of(context)!.settings.arguments as Task;
-  List<String> _statusOptions = ['TO DO', 'DONE'];
-  late String _selectedStatus= task.etat;
+  final List<String> _statusOptions = ['TO DO', 'DONE'];
+  late String _selectedStatus= task.etat=="false"?'TO DO':'DONE';
 
   @override
   Widget build(BuildContext context) {
@@ -140,7 +141,7 @@ class _TaskDetailsState extends State<TaskDetails> {
                       ),
                     ),
                     Text(
-                      task.message,
+                      task.message != null ? task.message! : "No message",
                       style: const TextStyle(
                         fontSize: 15,
                         color: Colors.black,
@@ -148,6 +149,7 @@ class _TaskDetailsState extends State<TaskDetails> {
                     ),
                 DropdownButton<String>(
                   isDense: true,
+                  elevation: 1,
                   value: _selectedStatus,
                   items: _statusOptions.map((String status) {
                     return DropdownMenuItem<String>(
@@ -162,9 +164,9 @@ class _TaskDetailsState extends State<TaskDetails> {
                   onChanged: (newStatus) {
                     setState(() {
                       _selectedStatus = newStatus!;
-                      task.etat=newStatus;
+                      task.etat=newStatus=='TO DO'?"false":"true";
                     });
-                    // Update the task status in your data model or database
+                    switchStateTask(task.id);
                   },
                 )
                 ],

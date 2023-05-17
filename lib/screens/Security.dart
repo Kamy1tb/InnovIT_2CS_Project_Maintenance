@@ -2,12 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:innovit_2cs_project_paiement/widgets/PasswordInputWidget.dart';
 import '../utilities/constants.dart';
 import '../widgets/RoundedColoredButton.dart';
+import '../global.dart' as global;
 
 class Security extends StatelessWidget{
+
   const Security({super.key});
   @override
   Widget build(BuildContext context) {
-    String password = ModalRoute.of(context)!.settings.arguments as String;
+    final _formKey = GlobalKey<FormState>();
+    final current = TextEditingController();
+    final newPassword=TextEditingController();
+    final confirm=TextEditingController();
+    late String actualValue;
+    late String newValue;
+    late String confirmValue;
     return Scaffold(
       appBar:  AppBar(
         leading: IconButton(
@@ -32,9 +40,10 @@ class Security extends StatelessWidget{
             const SizedBox(
               height: 80,
             ),
-            PasswordInputWidget(label: "Current password"),
-            PasswordInputWidget(label: "New password"),
-            PasswordInputWidget(label: "Re-type new password"),
+            PasswordInputWidget(
+                label: "Current password", controller: current),
+            PasswordInputWidget(label: "New password", controller: newPassword),
+            PasswordInputWidget(label: "Re-type new password", controller: confirm),
             const SizedBox(
               height: 35,
             ),
@@ -58,8 +67,14 @@ class Security extends StatelessWidget{
                   textColor: Colors.black.withOpacity(0.6),
                   fillColor: Color(0xffbce4d4),
                   shadowBlurRadius: 0,
-                  onPressed: ()=>{}),
-            )
+                  onPressed:  () {
+                    if (_formKey.currentState!.validate()) {
+                      actualValue = current.text;
+                      newValue = newPassword.text;
+                      confirmValue = confirm.text;
+                    }
+                  },
+            )),
           ],
         ),
       ),
