@@ -1,9 +1,8 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:innovit_2cs_project_paiement/screens/HomePage.dart';
 import 'package:innovit_2cs_project_paiement/screens/SignInPage.dart';
 import 'package:innovit_2cs_project_paiement/screens/assignTask.dart';
-
 import 'package:innovit_2cs_project_paiement/screens/tasksList.dart';
 import 'package:innovit_2cs_project_paiement/screens/mytasks.dart';
 import 'package:innovit_2cs_project_paiement/screens/profile.dart';
@@ -12,14 +11,38 @@ import 'package:innovit_2cs_project_paiement/screens/Security.dart';
 import 'package:innovit_2cs_project_paiement/screens/Help.dart';
 
 import 'package:innovit_2cs_project_paiement/screens/task_details.dart';
-import 'package:innovit_2cs_project_paiement/widgets/appBar.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
 Future main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: ".env");// mergeWith optional, you can include Platform.environment for Mobile/Desktop app
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  FirebaseMessaging messaging = FirebaseMessaging.instance;
 
+  NotificationSettings settings = await messaging.requestPermission(
+    alert: true,
+    announcement: false,
+    badge: true,
+    carPlay: false,
+    criticalAlert: false,
+    provisional: false,
+    sound: true,
+  );
+
+  print('User granted permission: ${settings.authorizationStatus}');
+
+  FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+    print('Got a message whilst in the foreground!');
+    print('Message data: ${message.data}');
+
+    if (message.notification != null) {
+      print('Message also contained a notification: ${message.notification}');
+    }
+  });
   runApp(MyApp());
 }
 

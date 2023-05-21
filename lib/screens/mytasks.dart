@@ -1,16 +1,17 @@
 import 'dart:async';
-import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../utilities/constants.dart';
 import '../utilities/functions.dart';
 import '../viewmodels/Task.dart';
 import '../global.dart' as global;
+import '../widgets/RoundedColoredButton.dart';
 
 //TasksList widget
 class MyTasks extends StatefulWidget {
   const MyTasks({super.key});
-  @override
+    @override
   State<StatefulWidget> createState() => MyTasksState();
 }
 class MyTasksState extends State<MyTasks> {
@@ -46,13 +47,13 @@ class MyTasksState extends State<MyTasks> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         actions: [
-          DecoratedBox(
-            decoration: BoxDecoration(
-                border: Border.all(color: cadetGray, width:1),
-                borderRadius: BorderRadius.circular(20),
-                          ),
-            child: Padding(
-              padding: EdgeInsets.only(left:10, right:10),
+          Container(
+            margin: const EdgeInsets.only(top:5, right: 10),
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                  border: Border.all(color: cadetGray, width:1),
+                  borderRadius: BorderRadius.circular(20),
+                            ),
               child: DropdownButton<String>(
                 value: sortValue,
                 onChanged: sortTasks,
@@ -60,10 +61,13 @@ class MyTasksState extends State<MyTasks> {
                     .map<DropdownMenuItem<String>>((String value) {
                   return DropdownMenuItem<String>(
                     value: value,
-                    child: Text(value,
-                    style: const TextStyle(
-                      color:cadetGray
-                    ),),
+                    child: Container(
+                      padding: EdgeInsets.only(left: 8),
+                      child: Text(value,
+                      style: const TextStyle(
+                        color:cadetGray
+                      ),),
+                    ),
                   );
                 }).toList(),
                 underline: Container(),
@@ -107,6 +111,20 @@ class MyTasksState extends State<MyTasks> {
                           fontSize: 14
                       ),),
                   ),
+                  const SizedBox(
+                    height: 40,
+                  ),
+                  RoundedColoredButton(
+                      width: 200,
+                      height: 50,
+                      text: "Refresh",
+                      textColor: Colors.white,
+                      fillColor: pastelRed,
+                      shadowBlurRadius: 0,
+                      onPressed: ()=>{
+                      Navigator.of(context)
+                          .pushNamed("/home")
+                      }),
                 ],
               ),
             );

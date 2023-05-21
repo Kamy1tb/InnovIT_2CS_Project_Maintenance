@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:innovit_2cs_project_paiement/utilities/functions.dart';
+import '../utilities/functions.dart';
 import '../utilities/constants.dart';
 import '../viewmodels/Task.dart';
+import '../widgets/RoundedColoredButton.dart';
+import '../global.dart' as global;
 
 class TaskDetails extends StatefulWidget{
   const TaskDetails({super.key});
@@ -22,7 +24,7 @@ class _TaskDetailsState extends State<TaskDetails> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pop(context, task.etat);
+            Navigator.pop(context);
           },
         ),
         title: const Text(
@@ -39,140 +41,179 @@ class _TaskDetailsState extends State<TaskDetails> {
         padding: const EdgeInsets.all(15),
         child: Container(
           margin: const EdgeInsets.fromLTRB(10,80,10,0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          child: Column(
             children: [
-              const SizedBox(
-                height: 320,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Date :',
-                      style: TextStyle(
-                        fontSize: 15,
-                        color: Colors.black,
-                      ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const SizedBox(
+                    height: 320,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Date :',
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: Colors.black,
+                          ),
+                        ),
+                        Text(
+                          'Heure :',
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: Colors.black,
+                          ),
+                        ),
+                        Text(
+                          'Entreprise :',
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: Colors.black,
+                          ),
+                        ),
+                        Text(
+                          'Distributeur :',
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: Colors.black,
+                          ),
+                        ),
+                        Text(
+                          'Type :',
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: Colors.black,
+                          ),
+                        ),Text(
+                          'Message :',
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: Colors.black,
+                          ),
+                        ),
+                        Text(
+                          'Etat :',
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ],
                     ),
-                    Text(
-                      'Heure :',
-                      style: TextStyle(
-                        fontSize: 15,
-                        color: Colors.black,
-                      ),
-                    ),
-                    Text(
-                      'Entreprise :',
-                      style: TextStyle(
-                        fontSize: 15,
-                        color: Colors.black,
-                      ),
-                    ),
-                    Text(
-                      'Distributeur :',
-                      style: TextStyle(
-                        fontSize: 15,
-                        color: Colors.black,
-                      ),
-                    ),
-                    Text(
-                      'Type :',
-                      style: TextStyle(
-                        fontSize: 15,
-                        color: Colors.black,
-                      ),
-                    ),Text(
-                      'Message :',
-                      style: TextStyle(
-                        fontSize: 15,
-                        color: Colors.black,
-                      ),
-                    ),
-                    Text(
-                      'Etat :',
-                      style: TextStyle(
-                        fontSize: 15,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(
-                height: 320,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      task.date,
-                      style: const TextStyle(
-                        fontSize: 15,
-                        color: Colors.black,
-                      ),
-                    ),
-                    Text(
-                      task.heure,
-                      style: const TextStyle(
-                        fontSize: 15,
-                        color: Colors.black,
-                      ),
-                    ),
-                    Text(
-                      task.entreprise,
-                      style: const TextStyle(
-                        fontSize: 15,
-                        color: Colors.black,
-                      ),
-                    ),
-                    Text(
-                      task.id.toString(),
-                      style: const TextStyle(
-                        fontSize: 15,
-                        color: Colors.black,
-                      ),
-                    ),
-                    Text(
-                      task.type,
-                      style: const TextStyle(
-                        fontSize: 15,
-                        color: Colors.black,
-                      ),
-                    ),
-                    Text(
-                      task.message != null ? task.message! : "No message",
-                      style: const TextStyle(
-                        fontSize: 15,
-                        color: Colors.black,
-                      ),
-                    ),
-                DropdownButton<String>(
-                  isDense: true,
-                  elevation: 1,
-                  value: _selectedStatus,
-                  items: _statusOptions.map((String status) {
-                    return DropdownMenuItem<String>(
-                      value: status,
-                      child: Text(
-                          status,
-                          style: TextStyle(color: status =='TO DO'?pastelRed:mountainMeadow),
-                      ),
-                    );
-                  }).toList(),
+                  ),
+                  SizedBox(
+                    height: 320,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          task.date,
+                          style: const TextStyle(
+                            fontSize: 15,
+                            color: Colors.black,
+                          ),
+                        ),
+                        Text(
+                          task.heure,
+                          style: const TextStyle(
+                            fontSize: 15,
+                            color: Colors.black,
+                          ),
+                        ),
+                        Text(
+                          task.entreprise,
+                          style: const TextStyle(
+                            fontSize: 15,
+                            color: Colors.black,
+                          ),
+                        ),
+                        Text(
+                          task.id.toString(),
+                          style: const TextStyle(
+                            fontSize: 15,
+                            color: Colors.black,
+                          ),
+                        ),
+                        Text(
+                          task.type,
+                          style: const TextStyle(
+                            fontSize: 15,
+                            color: Colors.black,
+                          ),
+                        ),
+                        Container(
+                          width: 200,
+                          child: Text(
+                            task.message != null ? task.message! : "No message",
+                            style: const TextStyle(
+                              fontSize: 15,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
+                    DropdownButton<String>(
+                      isDense: true,
+                      elevation: 1,
+                      value: _selectedStatus,
+                      items: _statusOptions.map((String status) {
+                        return DropdownMenuItem<String>(
+                          value: status,
+                          child: Text(
+                              status,
+                              style: TextStyle(color: status =='TO DO'?pastelRed:mountainMeadow),
+                          ),
+                        );
+                      }).toList(),
 
-                  onChanged: (newStatus) {
-                    setState(() {
-                      _selectedStatus = newStatus!;
-                      task.etat=newStatus=='TO DO'?"false":"true";
-                    });
-                    switchStateTask(task.id);
-                  },
-                )
+                      onChanged: (newStatus) async {
+                        setState(() {
+                          _selectedStatus = newStatus!;
+                          task.etat=newStatus=='TO DO'?"false":"true";
+                        });
+                        switchStateTask(task.id);
+
+                      },
+                    ),
+
+                    ],
+
+                    ),
+                  ),
                 ],
-
-                ),
               ),
+              const SizedBox(
+                height: 50,
+              ),
+              Container(
+                  child: task.idUser==global.globalSessionData!.userId?
+                  RoundedColoredButton(
+                      width: 250,
+                      height: 50,
+                      text: "Remove from My Tasks",
+                      textColor: Colors.white,
+                      fillColor: pastelRed,
+                      shadowBlurRadius: 0,
+                      onPressed: (){
+                        assignTaskAM(global.globalSessionData!.userId, task.id, false);
+                        final snackBar = SnackBar(
+                          content: const Text('Task removed from my tasks!'),
+                          backgroundColor: (Colors.black12),
+                          action: SnackBarAction(
+                            label: 'dismiss',
+                            onPressed: () {
+                              assignTaskAM(global.globalSessionData!.userId, task.id, true);
+                            },
+                          ),
+                        );
+                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                      }):
+                  const SizedBox(
+                      height:5
+                  )
+              )
             ],
           ),
         ),) ,

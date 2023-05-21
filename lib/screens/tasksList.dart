@@ -1,10 +1,10 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import '../utilities/constants.dart';
 import '../utilities/functions.dart';
 import '../viewmodels/Task.dart';
 import '../global.dart' as global;
+import '../widgets/RoundedColoredButton.dart';
 
 //TasksList widget
 class TasksList extends StatefulWidget {
@@ -44,13 +44,13 @@ class TasksListState extends State<TasksList> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         actions: [
-          DecoratedBox(
-            decoration: BoxDecoration(
-              border: Border.all(color: cadetGray, width:1),
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Container(
-              padding: EdgeInsets.only(left:10, right:10),
+          Container(
+            margin: const EdgeInsets.only(right:10, top:5),
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                border: Border.all(color: cadetGray, width:1),
+                borderRadius: BorderRadius.circular(20),
+              ),
               child: DropdownButton<String>(
                 value: sortValue,
                 onChanged: sortTasks,
@@ -58,10 +58,13 @@ class TasksListState extends State<TasksList> {
                     .map<DropdownMenuItem<String>>((String value) {
                   return DropdownMenuItem<String>(
                     value: value,
-                    child: Text(value,
-                      style: const TextStyle(
-                          color:cadetGray
-                      ),),
+                    child: Container(
+                      padding: const EdgeInsets.only(left:8),
+                      child: Text(value,
+                        style: const TextStyle(
+                            color:cadetGray
+                        ),),
+                    ),
                   );
                 }).toList(),
                 underline: Container(),
@@ -104,6 +107,20 @@ class TasksListState extends State<TasksList> {
                       fontSize: 14
                     ),),
                   ),
+                  const SizedBox(
+                    height: 40,
+                  ),
+                  RoundedColoredButton(
+                      width: 200,
+                      height: 50,
+                      text: "Refresh",
+                      textColor: Colors.white,
+                      fillColor: pastelRed,
+                      shadowBlurRadius: 0,
+                      onPressed: ()=>{
+                        Navigator.of(context)
+                            .pushNamed("/home")
+                      }),
                 ],
               ),
             );

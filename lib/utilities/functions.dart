@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -67,7 +68,7 @@ Future<Task> getTasksInfo(idTask) async {
 
 }
 
-Future<void> assignTaskAM(int idUser, int idTask) async{
+Future<void> assignTaskAM(int idUser, int idTask, bool state) async{
   final url = Uri.parse('${dotenv.env["BASE_URL"]}/maintenance/tasks/AM/assign');
   final response = await http.post(url,
       headers: <String, String>{
@@ -76,6 +77,7 @@ Future<void> assignTaskAM(int idUser, int idTask) async{
       body: jsonEncode(<String, dynamic>{
         'id': idTask,
         'idUser': idUser,
+        'state' : state,
       }));
   if (response.statusCode == 200) {
     print('Task assigned to person successfully');
@@ -95,7 +97,7 @@ Future<void> switchStateTask(idTask) async{
         'id': idTask,
       }));
     if (response.statusCode == 200) {
-      print('Task assigned to person successfully');
+      print('Task state is changed successfully');
     } else {
       throw Exception('Failed to switch state || error code : ${response.statusCode}');
     }

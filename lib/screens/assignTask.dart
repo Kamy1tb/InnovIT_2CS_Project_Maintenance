@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:innovit_2cs_project_paiement/utilities/constants.dart';
-import 'package:innovit_2cs_project_paiement/utilities/functions.dart';
+import '../utilities/functions.dart';
 import 'package:innovit_2cs_project_paiement/widgets/RoundedColoredButton.dart';
 import '../viewmodels/Task.dart';
 import '../global.dart' as global;
+import 'package:provider/provider.dart';
 class AssignTask extends StatefulWidget{
   const AssignTask({super.key});
 
@@ -13,6 +14,16 @@ class AssignTask extends StatefulWidget{
 
 class _AssignTaskState extends State<AssignTask> {
   late Task task = ModalRoute.of(context)!.settings.arguments as Task;
+
+  void _showToast(BuildContext context) {
+    final scaffold = ScaffoldMessenger.of(context);
+    scaffold.showSnackBar(
+      SnackBar(
+        content: const Text('Task assigned successfully.'),
+        action: SnackBarAction(label: 'UNDO', onPressed: scaffold.hideCurrentSnackBar),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -178,7 +189,7 @@ class _AssignTaskState extends State<AssignTask> {
                       fillColor: pastelRed,
                       shadowBlurRadius: 0,
                       onPressed: ()=>{
-                        assignTaskAM(global.globalSessionData!.userId, task.id)
+                        assignTaskAM(global.globalSessionData!.userId, task.id, true)
                       }):
                   const SizedBox(
                       height:5

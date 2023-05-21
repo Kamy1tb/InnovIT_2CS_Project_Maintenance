@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "30570018858",
+    "project_id": "smartbev-innovit",
+    "storage_bucket": "smartbev-innovit.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:30570018858:android:2f7e72f39f990b433a6b53",
+        "android_client_info": {
+          "package_name": "com.example.innovit_2cs_project_maintenance"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "30570018858-44i2q95vrh6r04uoqr1k9dm814tbleoq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDU44Ggwy-8AjsDtexC_hUCdt8Lqev6-QU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "30570018858-44i2q95vrh6r04uoqr1k9dm814tbleoq.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "30570018858-mqs6h040icalsdtlgvbki6koumlihkv7.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.innovit2csProjectPaiement.RunnerTests"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
