@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:innovit_2cs_project_paiement/providers/AllTasksProvider.dart';
 import 'package:innovit_2cs_project_paiement/utilities/constants.dart';
 import '../utilities/functions.dart';
 import 'package:innovit_2cs_project_paiement/widgets/RoundedColoredButton.dart';
@@ -27,6 +28,7 @@ class _AssignTaskState extends State<AssignTask> {
 
   @override
   Widget build(BuildContext context) {
+    final taskProvider = Provider.of<AllTasksProvider>(context);
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -189,7 +191,7 @@ class _AssignTaskState extends State<AssignTask> {
                       fillColor: pastelRed,
                       shadowBlurRadius: 0,
                       onPressed: ()=>{
-                        assignTaskAM(global.globalSessionData!.userId, task.id, true)
+                        taskProvider.assignTask(task.id, false)
                       }):
                   const SizedBox(
                       height:5

@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../providers/MyTasksProvider.dart';
+import '../providers/AllTasksProvider.dart';
 import '../utilities/functions.dart';
 import '../utilities/constants.dart';
 import '../viewmodels/Task.dart';
@@ -19,6 +22,9 @@ class _TaskDetailsState extends State<TaskDetails> {
 
   @override
   Widget build(BuildContext context) {
+    final taskProvider = Provider.of<MyTasksProvider>(context);
+    final alltasks=Provider.of<AllTasksProvider>(context);
+    task.opened=true;
         return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -171,10 +177,8 @@ class _TaskDetailsState extends State<TaskDetails> {
                       onChanged: (newStatus) async {
                         setState(() {
                           _selectedStatus = newStatus!;
-                          task.etat=newStatus=='TO DO'?"false":"true";
+                          taskProvider.updateTaskState(task.id,task.etat);
                         });
-                        switchStateTask(task.id);
-
                       },
                     ),
 
@@ -197,15 +201,15 @@ class _TaskDetailsState extends State<TaskDetails> {
                       fillColor: pastelRed,
                       shadowBlurRadius: 0,
                       onPressed: (){
-                        assignTaskAM(global.globalSessionData!.userId, task.id, false);
+                        //false
+                        alltasks.assignTask(task.id, false);
                         final snackBar = SnackBar(
                           content: const Text('Task removed from my tasks!'),
                           backgroundColor: (Colors.black12),
                           action: SnackBarAction(
                             label: 'dismiss',
                             onPressed: () {
-                              assignTaskAM(global.globalSessionData!.userId, task.id, true);
-                            },
+                              alltasks.assignTask(task.id, true);                            },
                           ),
                         );
                         ScaffoldMessenger.of(context).showSnackBar(snackBar);

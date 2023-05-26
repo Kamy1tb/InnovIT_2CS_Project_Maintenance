@@ -1,5 +1,6 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:innovit_2cs_project_paiement/providers/AllTasksProvider.dart';
 import 'package:innovit_2cs_project_paiement/screens/HomePage.dart';
 import 'package:innovit_2cs_project_paiement/screens/SignInPage.dart';
 import 'package:innovit_2cs_project_paiement/screens/assignTask.dart';
@@ -9,10 +10,12 @@ import 'package:innovit_2cs_project_paiement/screens/profile.dart';
 import 'package:innovit_2cs_project_paiement/screens/EditProfile.dart';
 import 'package:innovit_2cs_project_paiement/screens/Security.dart';
 import 'package:innovit_2cs_project_paiement/screens/Help.dart';
-
+import 'package:innovit_2cs_project_paiement/utilities/functions.dart';
+import 'providers/MyTasksProvider.dart';
 import 'package:innovit_2cs_project_paiement/screens/task_details.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 
 Future main() async {
@@ -32,18 +35,30 @@ Future main() async {
     provisional: false,
     sound: true,
   );
-
-  print('User granted permission: ${settings.authorizationStatus}');
-
-  FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+    print('User granted permission: ${settings.authorizationStatus}');
+  String? token = await messaging.getToken();
+  print('FCM Token: $token');
+  FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
     print('Got a message whilst in the foreground!');
     print('Message data: ${message.data}');
-
+    getTasks();
     if (message.notification != null) {
       print('Message also contained a notification: ${message.notification}');
     }
   });
-  runApp(MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider<MyTasksProvider>(
+          create: (context) => MyTasksProvider(),
+        ),
+        ChangeNotifierProvider<AllTasksProvider>(
+          create: (context) => AllTasksProvider(),
+        ),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -62,8 +77,10 @@ class MyApp extends StatelessWidget {
         "/edit" : (_) => EditProfile(),
         "/security" : (_) => const Security(),
         "/help" : (_) => const Help(),
+        "/signin" : (_) => SignInPage(),
         "/home" : (_) => HomePage()
       },
+
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(fontFamily: 'Outfit'),

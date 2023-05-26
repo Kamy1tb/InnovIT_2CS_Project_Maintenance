@@ -3,6 +3,7 @@ class SessionData{
   late String encryptedPassword;
   late String encryptedToken;
   late int userId;
+  late String username;
 
 }
 SessionData? globalSessionData=SessionData();

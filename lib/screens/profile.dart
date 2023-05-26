@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import '../utilities/constants.dart';
+import '../utilities/functions.dart';
 import '../viewmodels/User.dart';
 import '../widgets/ProfileMenuWidget.dart';
 import '../widgets/RoundedColoredButton.dart';
@@ -139,6 +140,9 @@ class Profile extends StatelessWidget{
                     fillColor: pastelRed,
                     shadowBlurRadius: 8,
                     onPressed: ()=>{
+                    clearToken(),
+                    Navigator.of(context)
+                        .pushNamed("/signin"),
                       global.clearSessionData()
                     })
               ],

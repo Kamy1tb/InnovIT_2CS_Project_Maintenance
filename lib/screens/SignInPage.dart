@@ -1,6 +1,8 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:innovit_2cs_project_paiement/utilities/constants.dart';
+import '../utilities/functions.dart';
 import '../widgets/RoundedColoredButton.dart';
 import '../global.dart' as global;
 
@@ -8,6 +10,7 @@ class SignInPage extends StatelessWidget{
   final _formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
   final passwordController=TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -124,10 +127,17 @@ class SignInPage extends StatelessWidget{
                 text: 'Sign In',
                 textColor: Colors.white,
                 fillColor: mountainMeadow,
-                onPressed: () {
-                  global.globalSessionData?.userId=4;
-                  Navigator.of(context)
-                      .pushNamed("/home");
+                onPressed: () async {
+                  await login(emailController.text,passwordController.text);
+                  if(global.globalSessionData?.userId!=null){
+                    FirebaseMessaging messaging = FirebaseMessaging.instance;
+                    String? token = await messaging.getToken();
+                    addToken(token!);
+                    Navigator.of(context)
+                        .pushNamed("/home");
+                  }else{
+                    print("incorrect credentials !");
+                  }
                 },
                 shadowBlurRadius: 0),
             const Row(

@@ -1,11 +1,9 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../providers/MyTasksProvider.dart';
 import '../utilities/constants.dart';
-import '../utilities/functions.dart';
 import '../viewmodels/Task.dart';
-import '../global.dart' as global;
 import '../widgets/RoundedColoredButton.dart';
 
 //TasksList widget
@@ -22,26 +20,28 @@ class MyTasksState extends State<MyTasks> {
   @override
   void initState() {
     super.initState();
-    myTasks = getTasksAM(global.globalSessionData!.userId);
   }
-  void sortTasks(String? value) {
-    setState(() {
-      sortValue = value!;
-      switch(sortValue){
-        case "All":{
-          myTasks=getTasksAM(global.globalSessionData!.userId);
-        }break;
-        case "Done":{
-          myTasks=getDoneTasks(global.globalSessionData!.userId);
-        }break;
-        case "Undone":{
-          myTasks=getUnDoneTasks(global.globalSessionData!.userId);
-        }break;
-      }
-    });
-  }
+
   @override
   Widget build(BuildContext context) {
+    final taskProvider = Provider.of<MyTasksProvider>(context);
+    taskProvider.fetchMyTasks();
+    void sortTasks(String? value) {
+      setState(() {
+        sortValue = value!;
+        switch(sortValue){
+          case "All":{
+            taskProvider.fetchMyTasks();
+          }break;
+          case "Done":{
+            taskProvider.fetchDoneTasks();
+          }break;
+          case "Undone":{
+            taskProvider.fetchUndoneTasks();
+          }break;
+        }
+      });
+    }
     return Scaffold(
             appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -81,173 +81,179 @@ class MyTasksState extends State<MyTasks> {
         ],
       ),
 
-    body: FutureBuilder<List<Task>>(
-        future: myTasks,
-        builder: (context, snapshot){
-         if (snapshot.connectionState == ConnectionState.waiting) {
-            // Display a loading indicator while waiting for the data
-            return const Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Center(child: CircularProgressIndicator(
-                  backgroundColor: Colors.black26,
-                  valueColor: AlwaysStoppedAnimation<Color>(
-                    mountainMeadow, //<-- SEE HERE
-                  ),
-                )),
-              ],
-            );
-          } else if (snapshot.hasError) {
-            // Display an error message if there was an error retrieving the data
-            return Container(
-              margin: const EdgeInsets.symmetric(vertical: 0,horizontal: 20),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Center(
-                    child: Text('Error: ${snapshot.error}',
-                      style: const TextStyle(
-                          color: pastelRed,
-                          fontSize: 14
-                      ),),
-                  ),
-                  const SizedBox(
-                    height: 40,
-                  ),
-                  RoundedColoredButton(
-                      width: 200,
-                      height: 50,
-                      text: "Refresh",
-                      textColor: Colors.white,
-                      fillColor: pastelRed,
-                      shadowBlurRadius: 0,
-                      onPressed: ()=>{
-                      Navigator.of(context)
-                          .pushNamed("/home")
-                      }),
-                ],
-              ),
-            );
-          } else {
-            return ListView.builder(
-              padding: const EdgeInsets.fromLTRB(5, 30, 5, 8),
-              itemCount: snapshot.data!.length,
-              itemBuilder: (context, index){
-                final task = snapshot.data![index];
-                return ListTile(
-                  title: GestureDetector(
-                    onTap: () {
-                      Navigator.of(context)
-                          .pushNamed("/details",
-                          arguments: snapshot.data![index]);
-                    },
-                    child: Container(
-                      margin: const EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        color: mountainMeadow.withOpacity(0.05),
-                        borderRadius: const BorderRadius.all(
-                          Radius.circular(10),
-                        ),
+    body: Consumer<MyTasksProvider>(
+        builder: (context, taskProvider, _){
+          return FutureBuilder<List<Task>>(
+            future: taskProvider.myTasks,
+            builder: (context, snapshot){
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                // Display a loading indicator while waiting for the data
+                return const Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Center(child: CircularProgressIndicator(
+                      backgroundColor: Colors.black26,
+                      valueColor: AlwaysStoppedAnimation<Color>(
+                        mountainMeadow, //<-- SEE HERE
                       ),
-                      padding: const EdgeInsets.all(20.0),
-                      child:Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                task.date,
-                                style: const TextStyle(
-                                  fontSize: 13,
-                                  color: cadetGray,
-                                ),
-                              ),
-                              Text(
-                                'Time : ${task.heure}',
-                                style: const TextStyle(
-                                  fontSize: 13,
-                                  color: cadetGray,
-                                ),
-                              ),
-                            ],
+                    )),
+                  ],
+                );
+              } else if (snapshot.hasError) {
+                // Display an error message if there was an error retrieving the data
+                return Container(
+                  margin: const EdgeInsets.symmetric(vertical: 0,horizontal: 20),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Center(
+                        child: Text('Error: ${snapshot.error}',
+                          style: const TextStyle(
+                              color: pastelRed,
+                              fontSize: 14
+                          ),),
+                      ),
+                      const SizedBox(
+                        height: 40,
+                      ),
+                      RoundedColoredButton(
+                          width: 200,
+                          height: 50,
+                          text: "Refresh",
+                          textColor: Colors.white,
+                          fillColor: pastelRed,
+                          shadowBlurRadius: 0,
+                          onPressed: ()=>{
+                            Navigator.of(context)
+                                .pushNamed("/home")
+                          }),
+                    ],
+                  ),
+                );
+              } else {
+
+                return ListView.builder(
+                  padding: const EdgeInsets.fromLTRB(5, 30, 5, 8),
+                  itemCount: snapshot.data!.length,
+                  itemBuilder: (context, index){
+                    final task = snapshot.data![index];
+                    print("task state : ${task.etat}");
+                    return ListTile(
+                      title: GestureDetector(
+                        onTap: () {
+                          Navigator.of(context)
+                              .pushNamed("/details",
+                              arguments: snapshot.data![index]);
+                        },
+                        child: Container(
+                          margin: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            color: mountainMeadow.withOpacity(0.05),
+                            borderRadius: const BorderRadius.all(
+                              Radius.circular(10),
+                            ),
                           ),
-                          Row(
+                          padding: const EdgeInsets.all(20.0),
+                          child:Column(
                             children: [
-                              Container(
-                                margin: const EdgeInsets.only(right:15),
-                                child: const Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'Distributeur :',
-                                      style: TextStyle(
-                                        fontSize: 13,
-                                        height: 2,
-                                        color: Colors.black,
-                                      ),
-                                    ),
-                                    Text(
-                                      'Type :',
-                                      style: TextStyle(
-                                        fontSize: 13,
-                                        height: 2,
-                                        color: Colors.black,
-                                      ),
-                                    ),
-                                    Text(
-                                      'State :',
-                                      style: TextStyle(
-                                        fontSize: 13,
-                                        height: 2,
-                                        color: Colors.black,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    task.id.toString(),
+                                    task.date,
                                     style: const TextStyle(
                                       fontSize: 13,
-                                      height: 2,
-                                      color: Colors.black,
+                                      color: cadetGray,
                                     ),
                                   ),
                                   Text(
-                                    task.type,
+                                    'Time : ${task.heure}',
                                     style: const TextStyle(
                                       fontSize: 13,
-                                      height: 2,
-                                      color: Colors.black,
+                                      color: cadetGray,
                                     ),
                                   ),
-                                  Text(
-                                    task.etat=='true'? "DONE" : "TO DO",
-                                    style: TextStyle(
-                                      fontSize: 13,
-                                      height: 2,
-                                      color: task.etat == "false" ? pastelRed : mountainMeadow,
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  Container(
+                                    margin: const EdgeInsets.only(right:15),
+                                    child: const Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          'Distributeur :',
+                                          style: TextStyle(
+                                            fontSize: 13,
+                                            height: 2,
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                        Text(
+                                          'Type :',
+                                          style: TextStyle(
+                                            fontSize: 13,
+                                            height: 2,
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                        Text(
+                                          'State :',
+                                          style: TextStyle(
+                                            fontSize: 13,
+                                            height: 2,
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                      ],
                                     ),
+                                  ),
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        task.id.toString(),
+                                        style: const TextStyle(
+                                          fontSize: 13,
+                                          height: 2,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                      Text(
+                                        task.type,
+                                        style: const TextStyle(
+                                          fontSize: 13,
+                                          height: 2,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                      Text(
+                                        task.etat=='true'? "DONE" : "TO DO",
+                                        style: TextStyle(
+                                          fontSize: 13,
+                                          height: 2,
+                                          color: task.etat == "false" ? pastelRed : mountainMeadow,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ],
                               ),
                             ],
                           ),
-                        ],
+                        ),
                       ),
-                    ),
-                  ),
 
 
+                    );
+                  },
                 );
-              },
-            );
-          }
-        },
-      ),
+              }
+            },
+          );
+        }
+    ),
     );
   }
 }
