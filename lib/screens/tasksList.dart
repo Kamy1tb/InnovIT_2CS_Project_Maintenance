@@ -1,15 +1,12 @@
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:innovit_2cs_project_paiement/providers/MyTasksProvider.dart';
 import 'package:provider/provider.dart';
-import '../providers/AllTasksProvider.dart';
+import '../providers/TasksProvider.dart';
 import '../utilities/constants.dart';
-import '../utilities/functions.dart';
 import '../viewmodels/Task.dart';
 import '../global.dart' as global;
 import '../widgets/RoundedColoredButton.dart';
 
-//TasksList widget
+//TasksList screen
 class TasksList extends StatefulWidget {
   const TasksList({Key? key}) : super(key: key);
   @override
@@ -17,29 +14,46 @@ class TasksList extends StatefulWidget {
 }
 
 class TasksListState extends State<TasksList> {
-  late Future<List<Task>> tasks;
   late String filterValue = 'All';
-  //Authentication - I have to get the user ID
-  @override
-  void initState() {
-    super.initState();
+  showLoaderDialog(BuildContext context){
+    AlertDialog alert=AlertDialog(
+      content: Row(
+        children: [
+          const CircularProgressIndicator(
+            backgroundColor: Colors.black26,
+            valueColor: AlwaysStoppedAnimation<Color>(
+              mountainMeadow, //<-- SEE HERE
+            ),
+          ),
+          Container(margin: const EdgeInsets.only(left: 20),child:Text("Loading..." )),
+        ],),
+    );
+    showDialog(barrierDismissible: false,
+      context:context,
+      builder:(BuildContext context){
+        return alert;
+      },
+    );
   }
-
   @override
   Widget build(BuildContext context) {
-    final taskProvider=Provider.of<AllTasksProvider>(context);
+    final taskProvider=Provider.of<TasksProvider>(context);
     void filterTasks(String? value) {
-      setState(() {
+      setState(() async{
         filterValue = value!;
         switch (filterValue) {
           case "All":
             {
-              taskProvider.fetchTasks();
+              showLoaderDialog(context);
+              await taskProvider.fetchTasks();
+              Navigator.pop(context);
             }
             break;
           case "Free":
             {
-              taskProvider.filterFree();
+              showLoaderDialog(context);
+              await taskProvider.fetchFreeTasks();
+              Navigator.pop(context);
             }
             break;
         }
@@ -86,7 +100,7 @@ class TasksListState extends State<TasksList> {
           ),
         ],
       ),
-      body: Consumer<AllTasksProvider>(
+      body: Consumer<TasksProvider>(
         builder: (context, taskProvider, _){
           return FutureBuilder<List<Task>>(
             future: taskProvider.tasks,
@@ -133,7 +147,7 @@ class TasksListState extends State<TasksList> {
                     ],
                   ),
                 );
-              } else {
+              } else if (snapshot.data != null){
                 return ListView.builder(
                   padding: const EdgeInsets.fromLTRB(5, 30, 5, 8),
                   itemCount: snapshot.data!.length,
@@ -147,7 +161,6 @@ class TasksListState extends State<TasksList> {
                                   ? "/details"
                                   : "/assign",
                               arguments: snapshot.data![index]);
-                          task.opened=true;
                         },
                         child: Container(
                           margin: const EdgeInsets.all(8),
@@ -167,14 +180,14 @@ class TasksListState extends State<TasksList> {
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        task.date,
+                                        task.date!,
                                         style: const TextStyle(
                                           fontSize: 11,
                                           color: cadetGray,
                                         ),
                                       ),
                                       Text(
-                                        task.heure,
+                                        task.heure!,
                                         style: const TextStyle(
                                           fontSize: 11,
                                           color: cadetGray,
@@ -248,7 +261,7 @@ class TasksListState extends State<TasksList> {
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        task.id.toString(),
+                                        task.distributeur,
                                         style: const TextStyle(
                                           fontSize: 13,
                                           height: 2,
@@ -256,7 +269,7 @@ class TasksListState extends State<TasksList> {
                                         ),
                                       ),
                                       Text(
-                                        task.type,
+                                        task.type!,
                                         style: const TextStyle(
                                           fontSize: 13,
                                           height: 2,
@@ -285,6 +298,19 @@ class TasksListState extends State<TasksList> {
                       ),
                     );
                   },
+                );
+              }else{
+                return const Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Center(
+                        child: CircularProgressIndicator(
+                          backgroundColor: Colors.black26,
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                            mountainMeadow, //<-- SEE HERE
+                          ),
+                        )),
+                  ],
                 );
               }
             },

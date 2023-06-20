@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:innovit_2cs_project_paiement/utilities/constants.dart';
 import 'package:innovit_2cs_project_paiement/widgets/RoundedColoredButton.dart';
+import 'package:provider/provider.dart';
+import '../providers/UserProvider.dart';
 import '../viewmodels/User.dart';
 
 class EditProfile extends StatefulWidget{
@@ -9,9 +11,35 @@ class EditProfile extends StatefulWidget{
   _EditProfileState createState() => _EditProfileState();
 }
 class _EditProfileState extends State<EditProfile>{
+  final nomController = TextEditingController();
+  final prenomController = TextEditingController();
+  final emailController = TextEditingController();
+  final telController = TextEditingController();
+  showLoaderDialog(BuildContext context){
+    AlertDialog alert=AlertDialog(
+      content: Row(
+        children: [
+          const CircularProgressIndicator(
+            backgroundColor: Colors.black26,
+            valueColor: AlwaysStoppedAnimation<Color>(
+              mountainMeadow, //<-- SEE HERE
+            ),
+          ),
+          Container(margin: const EdgeInsets.only(left: 20),child:const Text("Editing Profile..." )),
+        ],),
+    );
+    showDialog(barrierDismissible: false,
+      context:context,
+      builder:(BuildContext context){
+        return alert;
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     User user=ModalRoute.of(context)!.settings.arguments as User;
+    final userProvider=Provider.of<UserProvider>(context);
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
@@ -87,7 +115,7 @@ class _EditProfileState extends State<EditProfile>{
                     Container(
                       margin: const EdgeInsets.only(top: 15),
                       child: Text(
-                        user.name,
+                        " ${user.nom} ${user.prenom}",
                         textAlign: TextAlign.center,
                         style: const TextStyle(
                             fontSize: 18,
@@ -103,8 +131,13 @@ class _EditProfileState extends State<EditProfile>{
                         style: const TextStyle(
                           fontSize: 14,
                         ),
-                        controller:TextEditingController(text: user.name),
+                        controller:prenomController,
                         decoration: InputDecoration(
+                            hintText: user.prenom,
+                            hintStyle: const TextStyle(
+                              fontSize: 14,
+                              color: Color(0xff9BAEBC),
+                            ),
                             focusedBorder:OutlineInputBorder(
                               borderSide: const BorderSide(color: cadetGray, width: 1.0),
                               borderRadius: BorderRadius.circular(20.0),
@@ -113,10 +146,36 @@ class _EditProfileState extends State<EditProfile>{
                               borderSide:const BorderSide(width: 1, color: cadetGray),
                               borderRadius:  BorderRadius.circular(20.0),
                             ),
-                            labelText: "Full Name"
+                            labelText: "First Name"
                         ),
                       ),
                     ),
+                    Container(
+                      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 26),
+                      child: TextField(
+                        style: const TextStyle(
+                          fontSize: 14,
+                        ),
+                        controller:nomController,
+                        decoration: InputDecoration(
+                            hintText: user.nom,
+                            hintStyle: const TextStyle(
+                              fontSize: 14,
+                              color: Color(0xff9BAEBC),
+                            ),
+                            focusedBorder:OutlineInputBorder(
+                              borderSide: const BorderSide(color: cadetGray, width: 1.0),
+                              borderRadius: BorderRadius.circular(20.0),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide:const BorderSide(width: 1, color: cadetGray),
+                              borderRadius:  BorderRadius.circular(20.0),
+                            ),
+                            labelText: "Last Name"
+                        ),
+                      ),
+                    ),
+
                     Container(
                       margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 26),
                       child: TextField(
@@ -124,8 +183,13 @@ class _EditProfileState extends State<EditProfile>{
                         style: const TextStyle(
                           fontSize: 14,
                         ),
-                        controller:TextEditingController(text:user.email),
+                        controller:emailController,
                         decoration: InputDecoration(
+                            hintText: user.email,
+                            hintStyle: const TextStyle(
+                              fontSize: 14,
+                              color: Color(0xff9BAEBC),
+                            ),
                             focusedBorder:OutlineInputBorder(
                               borderSide: const BorderSide(color: cadetGray, width: 1.0),
                               borderRadius: BorderRadius.circular(20.0),
@@ -145,8 +209,13 @@ class _EditProfileState extends State<EditProfile>{
                         style: const TextStyle(
                           fontSize: 14,
                         ),
-                        controller:TextEditingController(text: user.phone),
+                        controller:telController,
                         decoration: InputDecoration(
+                            hintText: user.phone,
+                            hintStyle: const TextStyle(
+                              fontSize: 14,
+                              color: Color(0xff9BAEBC),
+                            ),
                             focusedBorder:OutlineInputBorder(
                               borderSide: const BorderSide(color: cadetGray, width: 1.0),
                               borderRadius: BorderRadius.circular(20.0),
@@ -171,8 +240,21 @@ class _EditProfileState extends State<EditProfile>{
                           textColor: Colors.white,
                           fillColor: mountainMeadow,
                           shadowBlurRadius: 4,
-                          onPressed: () => {
-                            // update query to the db
+                          onPressed: () {
+                            showLoaderDialog(context);
+                            userProvider.editProfile(
+                                nomController.text,
+                                prenomController.text,
+                                emailController.text,
+                                telController.text,
+                                user.password);
+                          Navigator.of(context)
+                              .pushNamed("/profile");
+                          const snackBar = SnackBar(
+                          content: Text('Profile edited successfully'),
+                          backgroundColor: (Colors.black),
+                          );
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
                           }),
                     )
                   ],

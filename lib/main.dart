@@ -1,6 +1,7 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:innovit_2cs_project_paiement/providers/AllTasksProvider.dart';
+import 'package:innovit_2cs_project_paiement/providers/TasksProvider.dart';
+import 'package:innovit_2cs_project_paiement/providers/UserProvider.dart';
 import 'package:innovit_2cs_project_paiement/screens/HomePage.dart';
 import 'package:innovit_2cs_project_paiement/screens/SignInPage.dart';
 import 'package:innovit_2cs_project_paiement/screens/assignTask.dart';
@@ -10,8 +11,6 @@ import 'package:innovit_2cs_project_paiement/screens/profile.dart';
 import 'package:innovit_2cs_project_paiement/screens/EditProfile.dart';
 import 'package:innovit_2cs_project_paiement/screens/Security.dart';
 import 'package:innovit_2cs_project_paiement/screens/Help.dart';
-import 'package:innovit_2cs_project_paiement/utilities/functions.dart';
-import 'providers/MyTasksProvider.dart';
 import 'package:innovit_2cs_project_paiement/screens/task_details.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -41,7 +40,6 @@ Future main() async {
   FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
     print('Got a message whilst in the foreground!');
     print('Message data: ${message.data}');
-    getTasks();
     if (message.notification != null) {
       print('Message also contained a notification: ${message.notification}');
     }
@@ -49,13 +47,14 @@ Future main() async {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider<MyTasksProvider>(
-          create: (context) => MyTasksProvider(),
+        ChangeNotifierProvider<TasksProvider>(
+          create: (context) => TasksProvider(),
         ),
-        ChangeNotifierProvider<AllTasksProvider>(
-          create: (context) => AllTasksProvider(),
+        ChangeNotifierProvider<UserProvider>(
+          create: (context) => UserProvider(),
         ),
       ],
+
       child: const MyApp(),
     ),
   );

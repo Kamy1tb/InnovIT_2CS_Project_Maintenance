@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:innovit_2cs_project_paiement/providers/AllTasksProvider.dart';
+import 'package:innovit_2cs_project_paiement/providers/TasksProvider.dart';
 import 'package:innovit_2cs_project_paiement/utilities/constants.dart';
-import '../utilities/functions.dart';
 import 'package:innovit_2cs_project_paiement/widgets/RoundedColoredButton.dart';
 import '../viewmodels/Task.dart';
-import '../global.dart' as global;
 import 'package:provider/provider.dart';
 class AssignTask extends StatefulWidget{
   const AssignTask({super.key});
@@ -15,20 +13,33 @@ class AssignTask extends StatefulWidget{
 
 class _AssignTaskState extends State<AssignTask> {
   late Task task = ModalRoute.of(context)!.settings.arguments as Task;
-
-  void _showToast(BuildContext context) {
-    final scaffold = ScaffoldMessenger.of(context);
-    scaffold.showSnackBar(
-      SnackBar(
-        content: const Text('Task assigned successfully.'),
-        action: SnackBarAction(label: 'UNDO', onPressed: scaffold.hideCurrentSnackBar),
-      ),
+  showLoaderDialog(BuildContext context){
+    AlertDialog alert=AlertDialog(
+      content: Row(
+        children: [
+          const CircularProgressIndicator(
+            backgroundColor: Colors.black26,
+            valueColor: AlwaysStoppedAnimation<Color>(
+              mountainMeadow, //<-- SEE HERE
+            ),
+          ),
+          Container(margin: const EdgeInsets.only(left: 20),child:const Text("Assigning task..." )),
+        ],),
+    );
+    showDialog(barrierDismissible: false,
+      context:context,
+      builder:(BuildContext context){
+        return alert;
+      },
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    final taskProvider = Provider.of<AllTasksProvider>(context);
+    final taskProvider = Provider.of<TasksProvider>(context);
+    if(task.opened==false){
+      taskProvider.openTask(task.id);
+    }
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -38,7 +49,7 @@ class _AssignTaskState extends State<AssignTask> {
           },
         ),
         title: const Text(
-          "Task's Details",
+          "Assign Task",
           style: TextStyle(
               color: Colors.black
           ),),
@@ -96,18 +107,14 @@ class _AssignTaskState extends State<AssignTask> {
                             fontSize: 15,
                             color: Colors.black,
                           ),
-                        ),Text(
-                          'Message :',
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.black,
-                          ),
-                        ),
-                        Text(
-                          'Assigned To :',
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.black,
+                        ),SizedBox(
+                          height: 70,
+                          child: Text(
+                            'Message :',
+                            style: TextStyle(
+                              fontSize: 15,
+                              color: Colors.black,
+                            ),
                           ),
                         ),
                       ],
@@ -120,55 +127,48 @@ class _AssignTaskState extends State<AssignTask> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          task.date,
+                          task.date ?? "none",
                           style: const TextStyle(
                             fontSize: 15,
                             color: Colors.black,
                           ),
                         ),
                         Text(
-                          task.heure,
+                          task.heure ?? "none",
                           style: const TextStyle(
                             fontSize: 15,
                             color: Colors.black,
                           ),
                         ),
                         Text(
-                          task.entreprise,
+                          task.entreprise!,
                           style: const TextStyle(
                             fontSize: 15,
                             color: Colors.black,
                           ),
                         ),
                         Text(
-                          task.id.toString(),
+                          task.distributeur,
                           style: const TextStyle(
                             fontSize: 15,
                             color: Colors.black,
                           ),
                         ),
                         Text(
-                          task.type,
+                          task.type!,
                           style: const TextStyle(
                             fontSize: 15,
                             color: Colors.black,
                           ),
                         ),
-                        Container(
+                        SizedBox(
                           width: 200,
                           child: Text(
-                            task.message != null ? task.message! : "No message",
+                            task.message ?? "No message",
                             style: const TextStyle(
                               fontSize: 15,
                               color: pastelRed,
                             ),
-                          ),
-                        ),
-                        Text(
-                          task.username != null ? task.username! : "None",
-                          style: const TextStyle(
-                            fontSize: 15,
-                            color: Colors.black,
                           ),
                         ),
                       ],
@@ -188,10 +188,20 @@ class _AssignTaskState extends State<AssignTask> {
                       height: 50,
                       text: "Add to My Tasks",
                       textColor: Colors.white,
-                      fillColor: pastelRed,
+                      fillColor: mountainMeadow,
                       shadowBlurRadius: 0,
-                      onPressed: ()=>{
-                        taskProvider.assignTask(task.id, false)
+                      onPressed: () async{
+                        showLoaderDialog(context);
+                        taskProvider.assignTask(task,true);
+                        Navigator.of(context)
+                            .pushNamedAndRemoveUntil("/details",
+                            ModalRoute.withName("/home"),
+                            arguments: task);
+                        const snackBar = SnackBar(
+                          content: Text('Task added to my tasks!'),
+                          backgroundColor: (Colors.black),
+                        );
+                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
                       }):
                   const SizedBox(
                       height:5

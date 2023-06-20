@@ -1,33 +1,23 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:innovit_2cs_project_paiement/providers/UserProvider.dart';
+import 'package:provider/provider.dart';
 import '../utilities/constants.dart';
-import '../utilities/functions.dart';
 import '../viewmodels/User.dart';
 import '../widgets/ProfileMenuWidget.dart';
 import '../widgets/RoundedColoredButton.dart';
-import 'package:http/http.dart'as http;
 import '../global.dart' as global;
 
-Future<User> UserInfos(int idUser) async{
-  final url = Uri.parse('${dotenv.env["BASE_URL"]}/maintenance/users/$idUser');
-  final response = await http.get(url);
-  if (response.statusCode == 200) {
-    return User.fromJson(jsonDecode(response.body));
-  } else {
-    throw Exception('failed to load User information,error code: ${response.statusCode}');
-  }
-}
+
 
 class Profile extends StatelessWidget{
-  late Future<User> user;
+  const Profile({super.key});
+
   @override
   Widget build(BuildContext context) {
-    user=UserInfos(global.globalSessionData!.userId);
+    final userProvider=Provider.of<UserProvider>(context);
     return Scaffold(
         body: FutureBuilder<User>(
-        future: user,
+        future: userProvider.user,
         builder: (context, snapshot){
           if (snapshot.connectionState == ConnectionState.waiting) {
           // Display a loading indicator while waiting for the data
@@ -86,7 +76,7 @@ class Profile extends StatelessWidget{
                 Container(
                   margin: const EdgeInsets.only(top: 20),
                   child: Text(
-                    snapshot.data!.name,
+                    "${snapshot.data!.nom} ${snapshot.data!.prenom}" ,
                     textAlign: TextAlign.center,
                     style: const TextStyle(
                         fontSize: 18,
@@ -95,14 +85,25 @@ class Profile extends StatelessWidget{
                   ),
                 ),
                 Text(
-                  snapshot.data!.email,
+                  snapshot.data!.email!,
                   style: const TextStyle(
                       fontSize: 13,
                       color: cadetGray
                   ),
                 ),
+                Container(
+                  margin: const EdgeInsets.only(top: 20),
+                  child: Text(
+                    "${snapshot.data!.entreprise} Company",
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                        fontSize: 18,
+                        color: Colors.black
+                    ),
+                  ),
+                ),
                 const SizedBox(
-                  height: 60,
+                  height: 30,
                 ),
                 ProfileMenuWidget(
                     icon: const Icon(Icons.person),
@@ -140,7 +141,7 @@ class Profile extends StatelessWidget{
                     fillColor: pastelRed,
                     shadowBlurRadius: 8,
                     onPressed: ()=>{
-                    clearToken(),
+                    userProvider.clearToken(),
                     Navigator.of(context)
                         .pushNamed("/signin"),
                       global.clearSessionData()

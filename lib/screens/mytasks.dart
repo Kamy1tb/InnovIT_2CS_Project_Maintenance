@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:innovit_2cs_project_paiement/providers/TasksProvider.dart';
 import 'package:provider/provider.dart';
-import '../providers/MyTasksProvider.dart';
 import '../utilities/constants.dart';
 import '../viewmodels/Task.dart';
 import '../widgets/RoundedColoredButton.dart';
@@ -21,23 +21,47 @@ class MyTasksState extends State<MyTasks> {
   void initState() {
     super.initState();
   }
-
+  showLoaderDialog(BuildContext context){
+    AlertDialog alert=AlertDialog(
+      content: Row(
+        children: [
+          const CircularProgressIndicator(
+            backgroundColor: Colors.black26,
+            valueColor: AlwaysStoppedAnimation<Color>(
+              mountainMeadow, //<-- SEE HERE
+            ),
+          ),
+          Container(margin: const EdgeInsets.only(left: 20),child:Text("Loading..." )),
+        ],),
+    );
+    showDialog(barrierDismissible: false,
+      context:context,
+      builder:(BuildContext context){
+        return alert;
+      },
+    );
+  }
   @override
   Widget build(BuildContext context) {
-    final taskProvider = Provider.of<MyTasksProvider>(context);
-    taskProvider.fetchMyTasks();
+    final taskProvider = Provider.of<TasksProvider>(context);
     void sortTasks(String? value) {
-      setState(() {
+      setState(() async {
         sortValue = value!;
         switch(sortValue){
           case "All":{
-            taskProvider.fetchMyTasks();
+            showLoaderDialog(context);
+            await taskProvider.fetchMyTasks();
+            Navigator.pop(context);
           }break;
           case "Done":{
-            taskProvider.fetchDoneTasks();
+            showLoaderDialog(context);
+            await taskProvider.fetchDoneTasks();
+            Navigator.pop(context);
           }break;
           case "Undone":{
-            taskProvider.fetchUndoneTasks();
+            showLoaderDialog(context);
+            await taskProvider.fetchUndoneTasks();
+            Navigator.pop(context);
           }break;
         }
       });
@@ -62,7 +86,7 @@ class MyTasksState extends State<MyTasks> {
                   return DropdownMenuItem<String>(
                     value: value,
                     child: Container(
-                      padding: EdgeInsets.only(left: 8),
+                      padding: const EdgeInsets.only(left: 8),
                       child: Text(value,
                       style: const TextStyle(
                         color:cadetGray
@@ -81,7 +105,7 @@ class MyTasksState extends State<MyTasks> {
         ],
       ),
 
-    body: Consumer<MyTasksProvider>(
+    body: Consumer<TasksProvider>(
         builder: (context, taskProvider, _){
           return FutureBuilder<List<Task>>(
             future: taskProvider.myTasks,
@@ -137,7 +161,6 @@ class MyTasksState extends State<MyTasks> {
                   itemCount: snapshot.data!.length,
                   itemBuilder: (context, index){
                     final task = snapshot.data![index];
-                    print("task state : ${task.etat}");
                     return ListTile(
                       title: GestureDetector(
                         onTap: () {
@@ -160,7 +183,7 @@ class MyTasksState extends State<MyTasks> {
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    task.date,
+                                    task.date!,
                                     style: const TextStyle(
                                       fontSize: 13,
                                       color: cadetGray,
@@ -213,7 +236,7 @@ class MyTasksState extends State<MyTasks> {
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        task.id.toString(),
+                                        task.distributeur.toString(),
                                         style: const TextStyle(
                                           fontSize: 13,
                                           height: 2,
@@ -221,7 +244,7 @@ class MyTasksState extends State<MyTasks> {
                                         ),
                                       ),
                                       Text(
-                                        task.type,
+                                        task.type!,
                                         style: const TextStyle(
                                           fontSize: 13,
                                           height: 2,
@@ -229,11 +252,11 @@ class MyTasksState extends State<MyTasks> {
                                         ),
                                       ),
                                       Text(
-                                        task.etat=='true'? "DONE" : "TO DO",
+                                        task.etat? "DONE" : "TO DO",
                                         style: TextStyle(
                                           fontSize: 13,
                                           height: 2,
-                                          color: task.etat == "false" ? pastelRed : mountainMeadow,
+                                          color: task.etat ? mountainMeadow : pastelRed,
                                         ),
                                       ),
                                     ],

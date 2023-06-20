@@ -1,32 +1,55 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:innovit_2cs_project_paiement/utilities/constants.dart';
-import '../utilities/functions.dart';
+import 'package:provider/provider.dart';
+import '../providers/UserProvider.dart';
 import '../widgets/RoundedColoredButton.dart';
 import '../global.dart' as global;
 
 class SignInPage extends StatelessWidget{
-  final _formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
   final passwordController=TextEditingController();
 
+  SignInPage({super.key});
+  showLoaderDialog(BuildContext context){
+    AlertDialog alert=AlertDialog(
+      content: Row(
+        children: [
+          const CircularProgressIndicator(
+            backgroundColor: Colors.black26,
+            valueColor: AlwaysStoppedAnimation<Color>(
+              mountainMeadow, //<-- SEE HERE
+            ),
+          ),
+          Container(margin: const EdgeInsets.only(left: 20),child:Text("Signing In..." )),
+        ],),
+    );
+    showDialog(barrierDismissible: false,
+      context:context,
+      builder:(BuildContext context){
+        return alert;
+      },
+    );
+  }
   @override
   Widget build(BuildContext context) {
+    final userProvider=Provider.of<UserProvider>(context);
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Padding(
         padding: const EdgeInsets.all(15),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SizedBox(
-                  height:100,
-                  width: 100,
+                  height: MediaQuery.of(context).size.height*0.1,
+                ),
+                SizedBox(
+                  height:120,
+                  width: 120,
                   child: Image.asset('assets/logo/app_logo.png'),
                 ),
                 const Text(
@@ -69,6 +92,7 @@ class SignInPage extends StatelessWidget{
             ),
             TextField(
               controller: passwordController,
+              obscureText: true,
               decoration: InputDecoration(
                   hintText: 'Enter your password',
                   hintStyle: const TextStyle(
@@ -128,87 +152,28 @@ class SignInPage extends StatelessWidget{
                 textColor: Colors.white,
                 fillColor: mountainMeadow,
                 onPressed: () async {
-                  await login(emailController.text,passwordController.text);
-                  if(global.globalSessionData?.userId!=null){
+                  showLoaderDialog(context);
+                  final logged = await userProvider.login(emailController.text,passwordController.text);
+                  global.globalSessionData?.encryptedPassword=passwordController.text;
+                  if(logged){
                     FirebaseMessaging messaging = FirebaseMessaging.instance;
                     String? token = await messaging.getToken();
-                    addToken(token!);
+                    userProvider.addToken(token!);
+                    userProvider.userInfo();
                     Navigator.of(context)
                         .pushNamed("/home");
                   }else{
-                    print("incorrect credentials !");
+                    Navigator.pop(context);
+                    const snackBar = SnackBar(
+                      content: Text('Login failed'),
+                      backgroundColor: pastelRed,
+                    );
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
                   }
                 },
                 shadowBlurRadius: 0),
-            const Row(
-              children: [
-                Expanded(
-                  child: Divider(
-                    indent: 10,
-                    endIndent: 10,
-                    thickness: 1,
-                    color: Colors.black,
-                  ),
-                ),
-                Text(
-                  'or',
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.black,
-                  ),
-                ),
-                Expanded(
-                  child: Divider(
-                    indent: 10,
-                    endIndent: 10,
-                    thickness: 1,
-                    color: Colors.black,
-                  ),
-                ),
-              ],
-            ),
-            Container(
-              width: 350,
-              height: 50,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: Color(0xffD9D9D9))),
-              child: const Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.g_mobiledata_rounded,
-                    size: 30,
-                  ),
-                  Text(
-                    'Login with google',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.black,
-                    ),
-                  )
-                ],
-              ),
-            ),
-            const Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'Don’t have an account ?  ',
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.black,
-                  ),
-                ),
-                Text(
-                  'Sign up',
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: mountainMeadow,
-                    decoration: TextDecoration.underline,
-                  ),
-                ),
-              ],
+            SizedBox(
+              height: MediaQuery.of(context).size.height*0.1,
             ),
           ],
         ),

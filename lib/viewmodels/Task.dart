@@ -2,14 +2,15 @@ class Task
 {
   int id;
   int? idUser;
-  String date;
-  String heure;
-  String entreprise;
+  String? date;
+  String? heure;
+  String? entreprise;
   String? message;
-  String type;
-  String etat;
+  String? type;
+  bool etat;
   bool opened;
   String? username;
+  String distributeur;
   Task({
     required this.id,
     required this.idUser,
@@ -20,7 +21,8 @@ class Task
     required this.type,
     required this.etat,
     required this.opened,
-    required this.username
+    required this.username,
+    required this.distributeur
   });
   factory Task.fromJson(Map<String, dynamic> json) {
     return Task(
@@ -31,9 +33,10 @@ class Task
         entreprise: json["idEntre"].toString(),
         message: json["message"],
         type: json["typetask"],
-        etat: json["isDone"].toString(),
+        etat: json["isDone"],
         opened: json["isOpen"],
-        username: json["userAM"]
+        username: json["userAM"],
+        distributeur: json["identifiant"]
     );
 
   }

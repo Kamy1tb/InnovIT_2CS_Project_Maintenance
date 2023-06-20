@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../providers/MyTasksProvider.dart';
-import '../providers/AllTasksProvider.dart';
-import '../utilities/functions.dart';
+import '../providers/TasksProvider.dart';
 import '../utilities/constants.dart';
 import '../viewmodels/Task.dart';
 import '../widgets/RoundedColoredButton.dart';
@@ -18,13 +16,32 @@ class TaskDetails extends StatefulWidget{
 class _TaskDetailsState extends State<TaskDetails> {
   late Task task = ModalRoute.of(context)!.settings.arguments as Task;
   final List<String> _statusOptions = ['TO DO', 'DONE'];
-  late String _selectedStatus= task.etat=="false"?'TO DO':'DONE';
+  late String _selectedStatus= task.etat==false ? 'TO DO':'DONE';
+  showLoaderDialog(BuildContext context){
+    AlertDialog alert=AlertDialog(
+      content: Row(
+        children: [
+          const CircularProgressIndicator(
+            backgroundColor: Colors.black26,
+            valueColor: AlwaysStoppedAnimation<Color>(
+              mountainMeadow,
+            ),
+          ),
+          Container(margin: const EdgeInsets.only(left: 20),child:const Text("Loading ..." )),
+        ],),
+    );
+    showDialog(barrierDismissible: false,
+      context:context,
+      builder:(BuildContext context){
+        return alert;
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    final taskProvider = Provider.of<MyTasksProvider>(context);
-    final alltasks=Provider.of<AllTasksProvider>(context);
-    task.opened=true;
+    final taskProvider = Provider.of<TasksProvider>(context);
+
         return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -92,11 +109,14 @@ class _TaskDetailsState extends State<TaskDetails> {
                             fontSize: 15,
                             color: Colors.black,
                           ),
-                        ),Text(
-                          'Message :',
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.black,
+                        ),SizedBox(
+                          height: 70,
+                          child: Text(
+                            'Message :',
+                            style: TextStyle(
+                              fontSize: 15,
+                              color: Colors.black,
+                            ),
                           ),
                         ),
                         Text(
@@ -116,21 +136,23 @@ class _TaskDetailsState extends State<TaskDetails> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          task.date,
+                          task.date != null
+                              ?task.date!
+                              :"No date",
                           style: const TextStyle(
                             fontSize: 15,
                             color: Colors.black,
                           ),
                         ),
                         Text(
-                          task.heure,
+                          task.heure!,
                           style: const TextStyle(
                             fontSize: 15,
                             color: Colors.black,
                           ),
                         ),
                         Text(
-                          task.entreprise,
+                          task.entreprise!,
                           style: const TextStyle(
                             fontSize: 15,
                             color: Colors.black,
@@ -144,13 +166,13 @@ class _TaskDetailsState extends State<TaskDetails> {
                           ),
                         ),
                         Text(
-                          task.type,
+                          task.type!,
                           style: const TextStyle(
                             fontSize: 15,
                             color: Colors.black,
                           ),
                         ),
-                        Container(
+                        SizedBox(
                           width: 200,
                           child: Text(
                             task.message != null ? task.message! : "No message",
@@ -177,7 +199,7 @@ class _TaskDetailsState extends State<TaskDetails> {
                       onChanged: (newStatus) async {
                         setState(() {
                           _selectedStatus = newStatus!;
-                          taskProvider.updateTaskState(task.id,task.etat);
+                          taskProvider.switchTask(task.id,task.etat);
                         });
                       },
                     ),
@@ -200,16 +222,21 @@ class _TaskDetailsState extends State<TaskDetails> {
                       textColor: Colors.white,
                       fillColor: pastelRed,
                       shadowBlurRadius: 0,
-                      onPressed: (){
-                        //false
-                        alltasks.assignTask(task.id, false);
+                      onPressed: () async {
+                        showLoaderDialog(context);
+                        taskProvider.assignTask(task, false);
+                        task.idUser=null;
+                        Navigator.of(context)
+                            .pushNamedAndRemoveUntil("/assign",
+                            ModalRoute.withName("/home"),
+                            arguments: task);
                         final snackBar = SnackBar(
                           content: const Text('Task removed from my tasks!'),
-                          backgroundColor: (Colors.black12),
+                          backgroundColor: (Colors.black),
                           action: SnackBarAction(
                             label: 'dismiss',
                             onPressed: () {
-                              alltasks.assignTask(task.id, true);                            },
+                              taskProvider.assignTask(task, true);                            },
                           ),
                         );
                         ScaffoldMessenger.of(context).showSnackBar(snackBar);
