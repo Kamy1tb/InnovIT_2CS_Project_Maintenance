@@ -142,6 +142,7 @@ class Profile extends StatelessWidget{
                     shadowBlurRadius: 8,
                     onPressed: ()=>{
                     userProvider.clearToken(),
+                      userProvider.logout(),
                     Navigator.of(context)
                         .pushNamed("/signin"),
                       global.clearSessionData()

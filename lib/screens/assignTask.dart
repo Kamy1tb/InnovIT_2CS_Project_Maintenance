@@ -88,14 +88,7 @@ class _AssignTaskState extends State<AssignTask> {
                           ),
                         ),
                         Text(
-                          'Company :',
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.black,
-                          ),
-                        ),
-                        Text(
-                          'SmartBev :',
+                          'Machine :',
                           style: TextStyle(
                             fontSize: 15,
                             color: Colors.black,
@@ -141,13 +134,6 @@ class _AssignTaskState extends State<AssignTask> {
                           ),
                         ),
                         Text(
-                          task.entreprise!,
-                          style: const TextStyle(
-                            fontSize: 15,
-                            color: Colors.black,
-                          ),
-                        ),
-                        Text(
                           task.distributeur,
                           style: const TextStyle(
                             fontSize: 15,
@@ -167,7 +153,7 @@ class _AssignTaskState extends State<AssignTask> {
                             task.message ?? "No message",
                             style: const TextStyle(
                               fontSize: 15,
-                              color: pastelRed,
+                              color: Colors.black,
                             ),
                           ),
                         ),

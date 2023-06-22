@@ -48,8 +48,8 @@ class SignInPage extends StatelessWidget{
                   height: MediaQuery.of(context).size.height*0.1,
                 ),
                 SizedBox(
-                  height:120,
-                  width: 120,
+                  height:130,
+                  width: 130,
                   child: Image.asset('assets/logo/app_logo.png'),
                 ),
                 const Text(
@@ -61,6 +61,9 @@ class SignInPage extends StatelessWidget{
                   ),
                 ),
               ],
+            ),
+            const SizedBox(
+              height:10,
             ),
             const Center(
               child: Text(
@@ -109,42 +112,6 @@ class SignInPage extends StatelessWidget{
                     ),
                   )),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    Checkbox(
-                      value: false,
-                      onChanged: (value){},
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5.0),
-                      ),
-                      side: MaterialStateBorderSide.resolveWith(
-                            (states) => const BorderSide(
-                            width: 1.0,
-                            color: Colors.red
-                        ),
-                      ),
-                    ),
-                    const Text(
-                      'Remember me',
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Color(0xff9BAEBC),
-                      ),
-                    ),
-                  ],
-                ),
-                const Text(
-                  'Forgot password ?',
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Color(0xff9BAEBC),
-                  ),
-                ),
-              ],
-            ),
             RoundedColoredButton(
                 width: 350,
                 height: 50,
@@ -173,7 +140,7 @@ class SignInPage extends StatelessWidget{
                 },
                 shadowBlurRadius: 0),
             SizedBox(
-              height: MediaQuery.of(context).size.height*0.1,
+              height: MediaQuery.of(context).size.height*0.15,
             ),
           ],
         ),

@@ -83,21 +83,14 @@ class _TaskDetailsState extends State<TaskDetails> {
                           ),
                         ),
                         Text(
-                          'Heure :',
+                          'Time :',
                           style: TextStyle(
                             fontSize: 15,
                             color: Colors.black,
                           ),
                         ),
                         Text(
-                          'Entreprise :',
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.black,
-                          ),
-                        ),
-                        Text(
-                          'Distributeur :',
+                          'Machine :',
                           style: TextStyle(
                             fontSize: 15,
                             color: Colors.black,
@@ -120,7 +113,7 @@ class _TaskDetailsState extends State<TaskDetails> {
                           ),
                         ),
                         Text(
-                          'Etat :',
+                          'State :',
                           style: TextStyle(
                             fontSize: 15,
                             color: Colors.black,
@@ -152,14 +145,7 @@ class _TaskDetailsState extends State<TaskDetails> {
                           ),
                         ),
                         Text(
-                          task.entreprise!,
-                          style: const TextStyle(
-                            fontSize: 15,
-                            color: Colors.black,
-                          ),
-                        ),
-                        Text(
-                          task.id.toString(),
+                          task.distributeur,
                           style: const TextStyle(
                             fontSize: 15,
                             color: Colors.black,
@@ -233,11 +219,6 @@ class _TaskDetailsState extends State<TaskDetails> {
                         final snackBar = SnackBar(
                           content: const Text('Task removed from my tasks!'),
                           backgroundColor: (Colors.black),
-                          action: SnackBarAction(
-                            label: 'dismiss',
-                            onPressed: () {
-                              taskProvider.assignTask(task, true);                            },
-                          ),
                         );
                         ScaffoldMessenger.of(context).showSnackBar(snackBar);
                       }):

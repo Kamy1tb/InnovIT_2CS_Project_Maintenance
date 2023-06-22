@@ -231,7 +231,7 @@ class TasksListState extends State<TasksList> {
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          'Distributeur :',
+                                          'Machine :',
                                           style: TextStyle(
                                             fontSize: 13,
                                             height: 2,
