@@ -1,0 +1,57 @@
+Nom du référentiel : InnovIT_2CS_Projet_Maintenance
+
+Description :
+Ce repository est dédié à l'application "mobile 3", développée en utilisant le framework Flutter. 
+Elle offre une plateforme aux utilisateurs pour gérer leurs tâches, suivre leur progression et s'assigner
+ des tâches. L'application est spécifiquement conçue pour les travailleurs de maintenance afin de les aider
+ à rester organisés et efficaces dans leurs tâches quotidiennes.
+
+
+Structure du référentiel :
+
+lib/ - Ce répertoire contient le code source principal de l'application Flutter.
+main.dart - Le point d'entrée de l'application.
+global.dart - Contient des variables globales de l'application.
+
+providers/ - Contient les différents providers pour gérer l'etat de données entre les differentes pages (avoir des données cohérentes)
+TasksProvider.dart : Ce provider gère les tâches de l'application, offrant des fonctionnalités telles que 
+la récupération de la liste des tâches, la mise à jour de leur état, l'ajout de nouvelles tâches, etc.
+UserProvider.dart : Ce provider gère les informations de l'utilisateur connecté à l'application, 
+stockant des détails tels que le nom, l'e-mail et l'image de profil. Il gère également les fonctionnalités
+ d'authentification, telles que la connexion, la déconnexion.
+
+screens/ - Contient les différentes interfaces ou pages de l'application.
+taskslist.dart - Affiche une liste de tâches concernant l'entreprise.
+mytasks.dart - Affiche la liste de tâches assignées à l'agent lui meme.
+taskDetails.dart - Affiche les détails d'une tâche spécifique.
+assignTask.dart - Permet à l'utilisateur de s'assigner une tâche.
+EditProfile.dart - Permet à l'utilisateur de modifier son profil.
+Help.dart - Permet à l'utilisateur de voir l'aide d'utilisation de l'application.
+HomePage.dart - Permet de naviguer entre les pages via une barre de navigation.
+profile.dart - Permet de voir le profil de l'utilisateur.
+Security.dart - Permet de modifier le mot de passe de l'application
+SignInPage.dart - La page d'authentification
+
+viewmodels/ - Contient les viewmodels utilisés dans l'application.
+task.dart - Définit la classe Task avec des propriétés telles que le titre, la description, l'état, etc.
+user.dart - Définit la classe User avec des propriétés telles que le nom, l'e-mail, etc.
+
+utilities/ - Contient des fichiers utiles pour faciliter le développement.
+constants.dart - définit les couleurs utilisées dans l'application.
+
+widgets/ - Contient des composants d'interface utilisateur réutilisables utilisés dans plusieurs interfaces.
+appBar.dart - La barre de navigation
+PasswordInputWidget.dart - Le input du mot de passe.
+ProfileMenuWidget.dart - un element du profil.
+RoundedColoredButton.dart - un bouton.
+RoundedTextField.dart - un champs de texte.
+...
+assets/ - Ce répertoire stocke les ressources statiques utilisées dans l'application.
+images/ - Contient les images et icônes utilisées pour l'interface utilisateur.
+fonts/ - Contient les polices personnalisées utilisées dans l'application.
+logo/ - le logo de l'application.
+
+
+
+
+

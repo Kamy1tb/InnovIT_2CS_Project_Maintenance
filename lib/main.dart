@@ -11,7 +11,7 @@ import 'package:innovit_2cs_project_paiement/screens/profile.dart';
 import 'package:innovit_2cs_project_paiement/screens/EditProfile.dart';
 import 'package:innovit_2cs_project_paiement/screens/Security.dart';
 import 'package:innovit_2cs_project_paiement/screens/Help.dart';
-import 'package:innovit_2cs_project_paiement/screens/task_details.dart';
+import 'package:innovit_2cs_project_paiement/screens/taskDetails.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
